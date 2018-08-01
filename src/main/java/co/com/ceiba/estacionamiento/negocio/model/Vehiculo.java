@@ -11,7 +11,9 @@ public class Vehiculo implements Serializable {
 	private TipoVehiculo tipoVehiculo;
 	
 	public Vehiculo(String placa, int cilindraje, TipoVehiculo tipoVehiculo) {
-		this.placa = placa;this.cilindraje = cilindraje;this.tipoVehiculo = tipoVehiculo;
+		this.placa = placa;
+		this.cilindraje = cilindraje;
+		this.tipoVehiculo = tipoVehiculo;
 	}
 
 	public Vehiculo() {
