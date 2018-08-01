@@ -5,13 +5,11 @@ import java.io.Serializable;
 import co.com.ceiba.estacionamiento.negocio.entity.TipoVehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 
-public class TipoVehiculoBuilder implements Serializable{
+public final class TipoVehiculoBuilder implements Serializable{
 
 	private static final long serialVersionUID = -4851793111134696040L;
 
-	private TipoVehiculoBuilder() {
-		
-	}
+	private TipoVehiculoBuilder() {}
 	
 	public static TipoVehiculo convertirAObject(TipoVehiculoEntity tipoVehiculoEntity) {
 		TipoVehiculo tipoVehiculo = null;
