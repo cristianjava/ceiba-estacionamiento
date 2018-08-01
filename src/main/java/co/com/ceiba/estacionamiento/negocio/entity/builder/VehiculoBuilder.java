@@ -5,7 +5,7 @@ import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 
-public class VehiculoBuilder {
+public final class VehiculoBuilder {
 
 	private VehiculoBuilder() {
 		
