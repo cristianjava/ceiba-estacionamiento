@@ -38,24 +38,24 @@ public class UsuarioTest {
 
 	@Test
 	public void pruebaArquitectura() {
-//		
-//		System.out.println("Inicio prueba ");
-//		TipoVehiculo tipoVehiculo = new TipoVehiculo();
-//		tipoVehiculo.setId(1L);
-//		Vehiculo vehiculo = new Vehiculo("CVA531", 1200, tipoVehiculo);
-//		Vehiculo vehiculo2 = new Vehiculo("CVA532", 1200, tipoVehiculo);
-//
-//		VehiculoEntity vehiculoEntity = VehiculoBuilder.convertirAEntity(vehiculo);
-//		VehiculoEntity vehiculoEntity2 = VehiculoBuilder.convertirAEntity(vehiculo2);
-//
-//		vehiculoManager.guardar(vehiculoEntity);
-//		vehiculoManager.guardar(vehiculoEntity2);
-//		
-//		List<VehiculoEntity> vehiculos = vehiculoManager.findAll();
-//		
-//		int cantidadCarros = vehiculoManager.findVehiculoByTipoVehiculoActivo(1L);
-//		System.out.println(vehiculos.get(0).getPlaca());
-//		System.out.println(cantidadCarros);
+		
+		System.out.println("Inicio prueba ");
+		TipoVehiculo tipoVehiculo = new TipoVehiculo();
+		tipoVehiculo.setId(1L);
+		Vehiculo vehiculo = new Vehiculo("CVA531", 1200, tipoVehiculo);
+		Vehiculo vehiculo2 = new Vehiculo("CVA532", 1200, tipoVehiculo);
+
+		VehiculoEntity vehiculoEntity = VehiculoBuilder.convertirAEntity(vehiculo);
+		VehiculoEntity vehiculoEntity2 = VehiculoBuilder.convertirAEntity(vehiculo2);
+
+		vehiculoManager.guardar(vehiculoEntity);
+		vehiculoManager.guardar(vehiculoEntity2);
+		
+		List<VehiculoEntity> vehiculos = vehiculoManager.findAll();
+		
+		int cantidadCarros = vehiculoManager.findVehiculoByTipoVehiculoActivo(1L);
+		System.out.println(vehiculos.get(0).getPlaca());
+		System.out.println(cantidadCarros);
 	}
 
 }
