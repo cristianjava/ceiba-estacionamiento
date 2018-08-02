@@ -40,7 +40,6 @@ public class UsuarioTest {
 	@Test
 	public void pruebaArquitectura() {
 
-		List<VehiculoEntity> vehiculos1 = vehiculoManager.findAll();
 		System.out.println("Inicio prueba ");
 		TipoVehiculo tipoVehiculo = new TipoVehiculo();
 		tipoVehiculo.setId(1L);

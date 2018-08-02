@@ -2,7 +2,6 @@ package co.com.ceiba.estacionamiento.negocio.entity.builder;
 
 import co.com.ceiba.estacionamiento.negocio.entity.TipoVehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
-import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 
 public final class VehiculoBuilder {
@@ -11,12 +10,6 @@ public final class VehiculoBuilder {
 		
 	}
 	
-//	public static Vehiculo convertirAObject(VehiculoEntity vehiculoEntity) {
-//		TipoVehiculo tipoVehiculo = TipoVehiculoBuilder.convertirAObject(vehiculoEntity.getTipoVehiculo());
-//		Vehiculo vehiculo = null;
-//		vehiculo = new Vehiculo(vehiculoEntity.getPlaca(), vehiculoEntity.getCilindraje(), tipoVehiculo, vehiculoEntity.getFechaIngreso(), vehiculoEntity.getFechaSalida());
-//		return vehiculo;
-//	}
 	
 	public static VehiculoEntity convertirAEntity(Vehiculo vehiculo) {
 		TipoVehiculoEntity tipoVehiculoEntity = TipoVehiculoBuilder.convertirAEntity(vehiculo.getTipoVehiculo());
