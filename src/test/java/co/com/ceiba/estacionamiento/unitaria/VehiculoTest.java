@@ -9,12 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
-//import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
+import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 
 public class VehiculoTest {
 
@@ -31,22 +30,22 @@ public class VehiculoTest {
 	public void crearTiqueteTest() throws ParseException {
 		
 		// arrange
-//		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().
-//				conPlaca(PLACA).
-//				conCilindraje(CILINDRAJE).
-//				conFechaIngreso(parqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
-//				conFechaSalida(FECHA_SALIDA != null ? parqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).
-//				conTipoVehiculo(TIPO_VEHICULO);
-//
-//		// act
-//		Vehiculo vehiculo = vehiculoTestDataBuilder.build();
-//
-//		// assert
-//		assertEquals(PLACA, vehiculo.getPlaca());
-//		assertEquals(CILINDRAJE, vehiculo.getCilindraje());
-//		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_INGRESO), vehiculo.getFechaIngreso());
-//		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_SALIDA), vehiculo.getFechaSalida());
-//		assertEquals(TIPO_VEHICULO, vehiculo.getTipoVehiculo());
+		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().
+				conPlaca(PLACA).
+				conCilindraje(CILINDRAJE).
+				conFechaIngreso(parqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
+				conFechaSalida(FECHA_SALIDA != null ? parqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).
+				conTipoVehiculo(TIPO_VEHICULO);
+
+		// act
+		Vehiculo vehiculo = vehiculoTestDataBuilder.build();
+
+		// assert
+		assertEquals(PLACA, vehiculo.getPlaca());
+		assertEquals(CILINDRAJE, vehiculo.getCilindraje());
+		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_INGRESO), vehiculo.getFechaIngreso());
+		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_SALIDA), vehiculo.getFechaSalida());
+		assertEquals(TIPO_VEHICULO, vehiculo.getTipoVehiculo());
 	}
 
 	@Test

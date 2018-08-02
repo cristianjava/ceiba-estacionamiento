@@ -9,11 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.ceiba.estacionamiento.negocio.model.Tiquete;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
-//import co.com.ceiba.estacionamiento.testdatabuilder.TiqueteTestDataBuilder;
+import co.com.ceiba.estacionamiento.testdatabuilder.TiqueteTestDataBuilder;
 
 public class TiqueteTest {
 
@@ -31,24 +30,24 @@ public class TiqueteTest {
 	public void crearTiqueteTest() throws ParseException {
 		
 		// arrange
-//		TiqueteTestDataBuilder tiqueteTestDataBuilder = new TiqueteTestDataBuilder().
-//				conPlaca(PLACA).
-//				conFechaIngreso(parqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
-//				conFechaSalida(FECHA_SALIDA != null ? parqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).
-//				conValorPago(VALOR_PAGO).
-//				conDiasEstadia(DIAS_ESTADIA).
-//				conHorasEstadia(HORAS_ESTADIA);
-//
-//		// act
-//		Tiquete tiquete = tiqueteTestDataBuilder.build();
-//
-//		// assert
-//		assertEquals(PLACA, tiquete.getPlaca());
-//		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_INGRESO), tiquete.getFechaIngreso());
-//		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_SALIDA), tiquete.getFechaSalida());
-//		assertEquals(VALOR_PAGO, tiquete.getValorPago(), 0);
-//		assertEquals(DIAS_ESTADIA, tiquete.getDiasEstadia());
-//		assertEquals(HORAS_ESTADIA, tiquete.getHorasEstadia());
+		TiqueteTestDataBuilder tiqueteTestDataBuilder = new TiqueteTestDataBuilder().
+				conPlaca(PLACA).
+				conFechaIngreso(parqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
+				conFechaSalida(FECHA_SALIDA != null ? parqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).
+				conValorPago(VALOR_PAGO).
+				conDiasEstadia(DIAS_ESTADIA).
+				conHorasEstadia(HORAS_ESTADIA);
+
+		// act
+		Tiquete tiquete = tiqueteTestDataBuilder.build();
+
+		// assert
+		assertEquals(PLACA, tiquete.getPlaca());
+		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_INGRESO), tiquete.getFechaIngreso());
+		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_SALIDA), tiquete.getFechaSalida());
+		assertEquals(VALOR_PAGO, tiquete.getValorPago(), 0);
+		assertEquals(DIAS_ESTADIA, tiquete.getDiasEstadia());
+		assertEquals(HORAS_ESTADIA, tiquete.getHorasEstadia());
 	}
 
 	@Test
