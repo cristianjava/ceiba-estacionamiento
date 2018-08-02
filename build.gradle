@@ -36,3 +36,11 @@ dependencies {
 	testCompile 'org.mockito:mockito-all:1.10.19'
 }
 
+test {
+	jacoco {
+		append = false
+		destinationFile = file("build/jacoco/jacocoTest.exec")
+	}
+	reports.junitXml.destination = file("build/jacoco/test-results")
+}
+jacocoTestReport.dependsOn(test)
