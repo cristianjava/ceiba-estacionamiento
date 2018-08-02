@@ -1,6 +1,7 @@
 package co.com.ceiba.estacionamiento.negocio.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Vehiculo implements Serializable {
 	
@@ -8,12 +9,16 @@ public class Vehiculo implements Serializable {
 	
 	private String placa;
 	private int cilindraje;
+	private Date fechaIngreso;
+	private Date fechaSalida;
 	private TipoVehiculo tipoVehiculo;
 	
-	public Vehiculo(String placa, int cilindraje, TipoVehiculo tipoVehiculo) {
+	public Vehiculo(String placa, int cilindraje, TipoVehiculo tipoVehiculo, Date fechaIngreso, Date fechaSalida) {
 		this.placa = placa;
 		this.cilindraje = cilindraje;
 		this.tipoVehiculo = tipoVehiculo;
+		this.fechaIngreso = fechaIngreso;
+		this.fechaSalida = fechaSalida;
 	}
 
 	public Vehiculo() {
@@ -30,6 +35,14 @@ public class Vehiculo implements Serializable {
 
 	public TipoVehiculo getTipoVehiculo() {
 		return tipoVehiculo;
+	}
+
+	public Date getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public Date getFechaSalida() {
+		return fechaSalida;
 	}
 	
 }

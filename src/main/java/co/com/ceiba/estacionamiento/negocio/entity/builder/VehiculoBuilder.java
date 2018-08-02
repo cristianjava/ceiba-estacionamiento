@@ -14,7 +14,7 @@ public final class VehiculoBuilder {
 	public static Vehiculo convertirAObject(VehiculoEntity vehiculoEntity) {
 		TipoVehiculo tipoVehiculo = TipoVehiculoBuilder.convertirAObject(vehiculoEntity.getTipoVehiculo());
 		Vehiculo vehiculo = null;
-		vehiculo = new Vehiculo(vehiculoEntity.getPlaca(), vehiculoEntity.getCilindraje(), tipoVehiculo);
+		vehiculo = new Vehiculo(vehiculoEntity.getPlaca(), vehiculoEntity.getCilindraje(), tipoVehiculo, vehiculoEntity.getFechaIngreso(), vehiculoEntity.getFechaSalida());
 		return vehiculo;
 	}
 	

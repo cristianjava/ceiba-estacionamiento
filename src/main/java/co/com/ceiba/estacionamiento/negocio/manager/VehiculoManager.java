@@ -6,17 +6,34 @@ import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 
 public interface VehiculoManager {
 
-
 	/**
-	 * Guardar vehiculo
+	 * Metodo para guardar en la tabla VEHICULO PARQUEADO
+	 * 
+	 * @param vehiculo
 	 */
-	void guardar(VehiculoEntity vehiculo);
+	void guardar(VehiculoEntity vehiculoEntity);
 
 	/**
-	 * Consultar todos los vehiculos
+	 * Se elimina un registro de la tabla VEHICULO PARQUEADO
+	 * 
+	 * @param vehiculoEntity
+	 */
+	void eliminar(VehiculoEntity vehiculoEntity);
+	
+	/**
+	 * Metodo para buscar el vehiculo de la tabla VEHICULO PARQUEADO por la placa
+	 * 
+	 * @param placa
+	 * @return
+	 */
+	VehiculoEntity findByPlaca(String placa);
+	
+	/**
+	 * Consultar todos los registros de la tabla VEHICULO PARQUEADO
+	 * 
+	 * @return
 	 */
 	List<VehiculoEntity> findAll();
 
-	Integer findVehiculoByTipoVehiculoActivo(Long id);
 	
 }

@@ -6,50 +6,42 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 @Entity
-@Table(name = "VEHICULO_PARQUEADO")
-public class VehiculoEntity {
+@Table(name = "TIQUETE")
+public class TiqueteEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long idTiquete;
 
 	@NotNull
 	private String placa;
-
-	@Null
-	private int cilindraje;
 
 	@NotNull
 	private Date fechaIngreso;
 
 	@Null
 	private Date fechaSalida;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_tipo_vehiculo")
-	private TipoVehiculoEntity tipoVehiculo;
 
-	public TipoVehiculoEntity getTipoVehiculo() {
-		return tipoVehiculo;
+	@Null
+	private double valorPago;
+
+	@Null
+	private int diasParqueo;
+
+	@Null
+	private int horasParqueo;
+
+	public Long getIdTiquete() {
+		return idTiquete;
 	}
 
-	public void setTipoVehiculo(TipoVehiculoEntity tipoVehiculo) {
-		this.tipoVehiculo = tipoVehiculo;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long idVehiculo) {
-		this.id = idVehiculo;
+	public void setIdTiquete(Long idTiquete) {
+		this.idTiquete = idTiquete;
 	}
 
 	public String getPlaca() {
@@ -58,14 +50,6 @@ public class VehiculoEntity {
 
 	public void setPlaca(String placa) {
 		this.placa = placa;
-	}
-
-	public int getCilindraje() {
-		return cilindraje;
-	}
-
-	public void setCilindraje(int cilindraje) {
-		this.cilindraje = cilindraje;
 	}
 
 	public Date getFechaIngreso() {
@@ -83,5 +67,29 @@ public class VehiculoEntity {
 	public void setFechaSalida(Date fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
-	
+
+	public double getValorPago() {
+		return valorPago;
+	}
+
+	public void setValorPago(double valorPago) {
+		this.valorPago = valorPago;
+	}
+
+	public int getDiasParqueo() {
+		return diasParqueo;
+	}
+
+	public void setDiasParqueo(int diasParqueo) {
+		this.diasParqueo = diasParqueo;
+	}
+
+	public int getHorasParqueo() {
+		return horasParqueo;
+	}
+
+	public void setHorasParqueo(int horasParqueo) {
+		this.horasParqueo = horasParqueo;
+	}
+
 }
