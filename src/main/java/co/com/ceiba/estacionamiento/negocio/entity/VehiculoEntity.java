@@ -10,7 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
+
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "VEHICULO_PARQUEADO")
@@ -23,13 +24,13 @@ public class VehiculoEntity {
 	@NotNull
 	private String placa;
 
-	@Null
+	@NotNull
 	private int cilindraje;
 
-	@NotNull
+	@Nullable
 	private Date fechaIngreso;
 
-	@Null
+	@Nullable
 	private Date fechaSalida;
 	
 	@ManyToOne
