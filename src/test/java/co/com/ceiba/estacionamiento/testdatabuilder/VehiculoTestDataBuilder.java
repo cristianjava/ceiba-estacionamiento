@@ -1,11 +1,8 @@
 package co.com.ceiba.estacionamiento.testdatabuilder;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
@@ -13,8 +10,6 @@ import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 
 public class VehiculoTestDataBuilder {
 
-	ParqueaderoUtil parqueaderoUtil= new ParqueaderoUtil();
-	
 	private static final DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 	private static final String PLACA = "CVA532";
 	private static final int CILINDRAJE = 1000;
@@ -28,11 +23,11 @@ public class VehiculoTestDataBuilder {
 	private Date fechaSalida;
 	private TipoVehiculo tipoVehiculo;
 
-	public VehiculoTestDataBuilder() throws ParseException {
+	public VehiculoTestDataBuilder() {
 		this.placa = PLACA;
 		this.cilindraje = CILINDRAJE;
-		this.fechaIngreso = (parqueaderoUtil.convertStringToDate(FECHA_INGRESO));
-		this.fechaSalida = FECHA_SALIDA != null ? (parqueaderoUtil.convertStringToDate(FECHA_SALIDA)) : null;
+		this.fechaIngreso = (ParqueaderoUtil.convertStringToDate(FECHA_INGRESO));
+		this.fechaSalida = FECHA_SALIDA != null ? (ParqueaderoUtil.convertStringToDate(FECHA_SALIDA)) : null;
 		this.tipoVehiculo = TIPO_VEHICULO;
 	}
 

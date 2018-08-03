@@ -1,7 +1,5 @@
 package co.com.ceiba.estacionamiento.negocio.manager;
 
-import java.util.List;
-
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 
 public interface VehiculoManager {
@@ -27,13 +25,5 @@ public interface VehiculoManager {
 	 * @return
 	 */
 	VehiculoEntity findByPlaca(String placa);
-	
-	/**
-	 * Consultar todos los registros de la tabla VEHICULO PARQUEADO
-	 * 
-	 * @return
-	 */
-	List<VehiculoEntity> findAll();
-
 	
 }

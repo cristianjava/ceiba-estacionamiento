@@ -1,23 +1,38 @@
 package co.com.ceiba.estacionamiento.unitaria;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import co.com.ceiba.estacionamiento.EstacionamientoApplication;
+import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
+import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
+import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
+import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
+import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes={EstacionamientoApplication.class})
+@DataJpaTest
 public class VehiculoTest {
 
-	ParqueaderoUtil parqueaderoUtil= new ParqueaderoUtil();
+	@Autowired
+	VehiculoManager vehiculoManager;
 	
 	private static final DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 	private static final String PLACA = "CVA531";
@@ -27,14 +42,14 @@ public class VehiculoTest {
 	private static final TipoVehiculo TIPO_VEHICULO = new TipoVehiculo("Carro", 1L);
 
 	@Test
-	public void crearTiqueteTest() throws ParseException {
+	public void crearTiqueteTest() {
 		
 		// arrange
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().
 				conPlaca(PLACA).
 				conCilindraje(CILINDRAJE).
-				conFechaIngreso(parqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
-				conFechaSalida(FECHA_SALIDA != null ? parqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).
+				conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
+				conFechaSalida(FECHA_SALIDA != null ? ParqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).
 				conTipoVehiculo(TIPO_VEHICULO);
 
 		// act
@@ -43,52 +58,38 @@ public class VehiculoTest {
 		// assert
 		assertEquals(PLACA, vehiculo.getPlaca());
 		assertEquals(CILINDRAJE, vehiculo.getCilindraje());
-		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_INGRESO), vehiculo.getFechaIngreso());
-		assertEquals(parqueaderoUtil.convertStringToDate(FECHA_SALIDA), vehiculo.getFechaSalida());
+		assertEquals(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO), vehiculo.getFechaIngreso());
+		assertEquals(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA), vehiculo.getFechaSalida());
 		assertEquals(TIPO_VEHICULO, vehiculo.getTipoVehiculo());
 	}
 
 	@Test
-	public void guardarVehiculoParqueadero() {
+	public void validarVehiculoNoEsteParqueado() {
 		
 		// arrange
+		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
+		Vehiculo vehiculo = vehiculoTestDataBuilder.build();
 		
 		// act
+		VehiculoEntity vehiculoEntity = vehiculoManager.findByPlaca(vehiculo.getPlaca());
 		
 		// assert
-		assertTrue(true);
+		assertNull(vehiculoEntity);
 	}
 
 	@Test
-	public void buscarVehiculosParqueadero() {
-		
-		// arrange
-		
-		// act
-		
-		// assert
-		assertTrue(true);
-	}
+	public void validaDesparqueoVehiculoEsteParqueado() {
 
-	@Test
-	public void BuscarUnVehiculoParqueadero() {
-		
 		// arrange
+		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
+		Vehiculo vehiculo = vehiculoTestDataBuilder.build();
 		
-		// act
-		
-		// assert
-		assertTrue(true);
-	}
-
-	@Test
-	public void eliminarVehiculoParqueadero() {
-		
-		// arrange
-		
-		// act
-		
-		// assert
-		assertTrue(true);
+		try {
+			// act
+			vehiculoManager.eliminar(VehiculoBuilder.convertirAEntity(vehiculo));
+		} catch (EstacionamientoException e) {
+			// assert
+			Assert.assertEquals(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO, e.getMessage());
+		}
 	}
 }

@@ -8,6 +8,6 @@ import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 
 public interface VehiculoDao extends JpaRepository<VehiculoEntity, Long>{
 
-	@Query(value="SELECT v FROM VehiculoEntity v WHERE v.placa =:placa", nativeQuery=true)
+	@Query(value="SELECT * FROM VEHICULO_PARQUEADO v WHERE v.placa =:placa", nativeQuery=true)
 	VehiculoEntity findVehiculoByPlaca(@Param("placa") String placa);
 }

@@ -1,14 +1,14 @@
 package co.com.ceiba.estacionamiento.negocio.manager.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.com.ceiba.estacionamiento.negocio.dao.VehiculoDao;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
+import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
+import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 
 @Repository
 public class VehiculoManagerImpl implements VehiculoManager {
@@ -23,17 +23,13 @@ public class VehiculoManagerImpl implements VehiculoManager {
 	@Transactional
 	@Override
 	public void guardar(VehiculoEntity vehiculo) {
+		VehiculoEntity vehiculoParqueado = findByPlaca(vehiculo.getPlaca());
+		if (vehiculoParqueado != null) {
+			throw new EstacionamientoException(Constantes.EL_VEHICULO_ESTA_PARQUEADO);
+		}
+		// Se valida que si la placa comienza por A y es diferente de Domingo o Lunes tira la excepcion
+		
 		vehiculoDAO.save(vehiculo);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager#findAll()
-	 */
-	@Transactional
-	@Override
-	public List<VehiculoEntity> findAll() {
-		return vehiculoDAO.findAll();
 	}
 
 	/*
@@ -43,6 +39,10 @@ public class VehiculoManagerImpl implements VehiculoManager {
 	@Transactional
 	@Override
 	public void eliminar(VehiculoEntity vehiculoEntity) {
+		VehiculoEntity vehiculoParqueado = findByPlaca(vehiculoEntity.getPlaca());
+		if (vehiculoParqueado == null) {
+			throw new EstacionamientoException(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO);
+		}
 		vehiculoDAO.delete(vehiculoEntity);
 	}
 

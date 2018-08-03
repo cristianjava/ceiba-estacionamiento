@@ -6,11 +6,23 @@ import java.util.Date;
 
 public class ParqueaderoUtil {
 
-	public Date convertStringToDate(String fecha) throws ParseException {
+	private ParqueaderoUtil(){
+		
+	}
+	
+	public static Date convertStringToDate(String fecha) {
 		Date nuevoFormato = null;
-		if (fecha != null && !fecha.isEmpty()) {
-			nuevoFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").parse(fecha);
+		try {
+			if (fecha != null && !fecha.isEmpty()) {
+				nuevoFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").parse(fecha);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 		return nuevoFormato;
+	}
+	
+	public static boolean isEmptyNull(Long valor) {
+		return (valor == 0 ? true : false);
 	}
 }

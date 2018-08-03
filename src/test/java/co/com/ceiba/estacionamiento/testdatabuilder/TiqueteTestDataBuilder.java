@@ -1,18 +1,14 @@
 package co.com.ceiba.estacionamiento.testdatabuilder;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.ceiba.estacionamiento.negocio.model.Tiquete;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 
 public class TiqueteTestDataBuilder {
 
-	ParqueaderoUtil parqueaderoUtil = new ParqueaderoUtil();
 	
 	private static final DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 	private static final String PLACA = "CVA531";
@@ -29,10 +25,10 @@ public class TiqueteTestDataBuilder {
 	private int diasEstadia;
 	private int horasEstadia;
 
-	public TiqueteTestDataBuilder() throws ParseException {
+	public TiqueteTestDataBuilder() {
 		this.placa = PLACA;
-		this.fechaIngreso = (parqueaderoUtil.convertStringToDate(FECHA_INGRESO));
-		this.fechaSalida = FECHA_SALIDA != null ? (parqueaderoUtil.convertStringToDate(FECHA_SALIDA)) : null;
+		this.fechaIngreso = (ParqueaderoUtil.convertStringToDate(FECHA_INGRESO));
+		this.fechaSalida = FECHA_SALIDA != null ? (ParqueaderoUtil.convertStringToDate(FECHA_SALIDA)) : null;
 		this.valorPago = VALOR_PAGO;
 		this.diasEstadia = DIAS_ESTADIA;
 		this.horasEstadia = HORAS_ESTADIA;
