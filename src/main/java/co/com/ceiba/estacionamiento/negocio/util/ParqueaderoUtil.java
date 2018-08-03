@@ -17,7 +17,7 @@ public class ParqueaderoUtil {
 				nuevoFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").parse(fecha);
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			nuevoFormato = null;
 		}
 		return nuevoFormato;
 	}
