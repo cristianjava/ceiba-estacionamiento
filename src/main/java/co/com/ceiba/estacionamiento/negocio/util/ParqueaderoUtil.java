@@ -3,9 +3,14 @@ package co.com.ceiba.estacionamiento.negocio.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
+
+import co.com.ceiba.estacionamiento.negocio.manager.impl.VigilanteManagerImpl;
 
 public class ParqueaderoUtil {
 
+	private static final Logger LOGGER = Logger.getLogger(VigilanteManagerImpl.class.getName());
+	
 	private ParqueaderoUtil(){
 		
 	}
@@ -17,12 +22,16 @@ public class ParqueaderoUtil {
 				nuevoFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").parse(fecha);
 			}
 		} catch (ParseException e) {
-			nuevoFormato = null;
+			LOGGER.info(e.getMessage());
 		}
 		return nuevoFormato;
 	}
 	
 	public static boolean isEmptyNull(Long valor) {
-		return (valor == 0 ? true : false);
+		boolean respuesta = false;
+		if (valor == 0) {
+			respuesta = true;
+		}
+		return respuesta;
 	}
 }

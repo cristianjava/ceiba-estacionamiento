@@ -10,4 +10,8 @@ public interface VehiculoDao extends JpaRepository<VehiculoEntity, Long>{
 
 	@Query(value="SELECT * FROM VEHICULO_PARQUEADO v WHERE v.placa =:placa", nativeQuery=true)
 	VehiculoEntity findVehiculoByPlaca(@Param("placa") String placa);
+
+	@Query(value="SELECT COUNT(*) FROM VEHICULO_PARQUEADO vp WHERE vp.id_tipo_vehiculo =:idTipoVehiculo", nativeQuery=true)
+	Integer findVehiculosParqueadosTipo(@Param("idTipoVehiculo") int idTipoVehiculo);
+	
 }

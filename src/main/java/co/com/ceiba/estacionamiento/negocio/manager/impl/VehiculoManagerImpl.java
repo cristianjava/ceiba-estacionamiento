@@ -58,4 +58,13 @@ public class VehiculoManagerImpl implements VehiculoManager {
 		return vehiculoEntity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager#findVehiculosParqueadosTipo(int)
+	 */
+	@Override
+	public int findVehiculosParqueadosTipo(int tipoVehiculo) {
+		return vehiculoDAO.findVehiculosParqueadosTipo(tipoVehiculo);
+	}
+
 }

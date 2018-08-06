@@ -25,5 +25,13 @@ public interface VehiculoManager {
 	 * @return
 	 */
 	VehiculoEntity findByPlaca(String placa);
+
+	/**
+	 * Metodo para consultar el numero de vehiculos parqueados por tipo
+	 * 
+	 * @param carro
+	 * @return
+	 */
+	int findVehiculosParqueadosTipo(int tipoVehiculo);
 	
 }
