@@ -2,7 +2,6 @@ package co.com.ceiba.estacionamiento.negocio.manager.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,8 +19,6 @@ public class VigilanteManagerImpl implements VigilanteManager {
 
 	@Autowired
 	VehiculoManager vehiculoManager;
-
-	private static final Logger LOGGER = Logger.getLogger(VigilanteManagerImpl.class.getName());
 	
 	/*
 	 * (non-Javadoc)
@@ -47,8 +44,6 @@ public class VigilanteManagerImpl implements VigilanteManager {
 			vehiculoManager.guardar(vehiculoEntity);
 		} catch (EstacionamientoException e) {
 			throw new EstacionamientoException(e.getMessage());
-		} catch (Exception e) {
-			LOGGER.info(e.getMessage());
 		}
 	}
 
