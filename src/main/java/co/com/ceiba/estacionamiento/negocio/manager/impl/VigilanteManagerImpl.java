@@ -43,7 +43,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 			// Guardamos en VEHICULO PARQUEADO
 			vehiculoManager.guardar(vehiculoEntity);
 		} catch (EstacionamientoException e) {
-			throw new EstacionamientoException(e.getMessage());
+			throw new RuntimeException(e);
 		}
 	}
 
