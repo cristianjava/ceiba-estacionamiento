@@ -19,7 +19,7 @@ public class ValidateRestriccionPlaca implements Validate {
 	public void validar(VehiculoEntity vehiculoEntity) {
 		LocalDate fechaHoraActual = LocalDate.now();
 		if (vehiculoEntity.getPlaca().startsWith(Comunes.A) && (fechaHoraActual.getDayOfWeek() == DayOfWeek.SUNDAY 
-				&& fechaHoraActual.getDayOfWeek() == DayOfWeek.MONDAY)) {
+				|| fechaHoraActual.getDayOfWeek() == DayOfWeek.MONDAY)) {
 			throw new EstacionamientoException(Constantes.RESTRICCION_PARQUEO_PLACA);
 		}
 	}

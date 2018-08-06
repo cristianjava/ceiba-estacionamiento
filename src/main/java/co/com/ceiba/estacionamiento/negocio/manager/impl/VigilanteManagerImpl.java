@@ -1,15 +1,26 @@
 package co.com.ceiba.estacionamiento.negocio.manager.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import co.com.ceiba.estacionamiento.negocio.dao.TarifaDao;
+import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
+import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
+import co.com.ceiba.estacionamiento.negocio.util.Constantes;
+import co.com.ceiba.estacionamiento.negocio.util.Constantes.Comunes;
 import co.com.ceiba.estacionamiento.negocio.validate.Validate;
 import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateParqueoDisponible;
 import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateRestriccionPlaca;
@@ -19,6 +30,9 @@ public class VigilanteManagerImpl implements VigilanteManager {
 
 	@Autowired
 	VehiculoManager vehiculoManager;
+	
+	@Autowired
+	TarifaDao tarifaDao;
 	
 	/*
 	 * (non-Javadoc)
@@ -52,23 +66,54 @@ public class VigilanteManagerImpl implements VigilanteManager {
 	 * @see co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager#salidaVehiculoParqueado(co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity)
 	 */
 	@Override
-	public void salidaVehiculoParqueado(VehiculoEntity vehiculoEntity) {
-		// Se elimina de VEHICULO PARQUEADO y actualiza TIQUETE PAGO para ultima la placa ordenada por fecha desc
+	public TiqueteEntity salidaVehiculoParqueado(VehiculoEntity vehiculoEntity) {
+		// Se elimina de VEHICULO PARQUEADO y se ingresa en TIQUETE PAGO
 		
-		// Se consultan las tarifas
-		
-		
-		// Se hace el calculo de cuanto se demoro en el parqueadero con las tarifas 
-		
-		
-		// Si el tiempo de estadia es menor a 9 horas se cobra por horas
-		
-		
-		// Si el tiempo es mayor o igual a 9 horas se hace el caculo para cobrar por dias y horas
+		try {
+			// Se busca el vehiculo parqueado y se calcula el tiempo en dias y horas
+			VehiculoEntity vehiculoParqueado = vehiculoManager.findByPlaca(vehiculoEntity.getPlaca());
+			vehiculoParqueado.setFechaSalida(vehiculoEntity.getFechaSalida());
+			LocalDateTime fechaIngreso = vehiculoParqueado.getFechaIngreso().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+			LocalDateTime fechaSalida = vehiculoParqueado.getFechaSalida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+			
+			long horasParqueo = Duration.between(fechaIngreso, fechaSalida).toHours();
+			long minutosParqueo = Duration.between(fechaIngreso, fechaSalida).toMinutes();
 
-		
-		// Si el vehiculo es moto y los cc son mayor a 500 se suma la tarifa 5 que pertenece a el sobrecargo cuando el cc es mayor
-		
+			long minutosRestantesHora = minutosParqueo%60;
+			if (minutosRestantesHora > Comunes.TIEMPO_ADICIONAL_HORA_PARQUEO) {
+				horasParqueo++;
+			}
+			
+			Long diasParqueado = horasParqueo/24;
+			Long horasParqueado = horasParqueo%24;
+			
+			if (horasParqueado >= 9 && horasParqueado <= 24) {
+				diasParqueado++;
+				horasParqueado = 0L;
+			}
+
+			// Se consultan las tarifas
+			List<TarifaEntity> listaTarifas = tarifaDao.findAll();
+			
+			TiqueteEntity tiqueteEntity = new TiqueteEntity();
+			tiqueteEntity.setPlaca(vehiculoEntity.getPlaca());
+			tiqueteEntity.setFechaIngreso(vehiculoEntity.getFechaIngreso());
+			tiqueteEntity.setFechaSalida(vehiculoEntity.getFechaSalida());
+			tiqueteEntity.setDiasParqueo(Integer.parseInt(diasParqueado.toString()));
+			tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueado.toString()));
+			
+			// dependiendo del tipo vehiculo se calcula el total a pagar con las tarifas
+			if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TipoVehiculo.CARRO) {
+				
+			} else if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TipoVehiculo.MOTO) {
+				// Si los cc son mayor a 500 se suma la tarifa 5 que pertenece a el sobrecargo cuando el cc es mayor
+				
+			}
+		} catch (EstacionamientoException e) {
+			throw new EstacionamientoException(e.getMessage());
+		}
+
+		return null;
 	}
 
 	

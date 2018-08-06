@@ -44,5 +44,9 @@ public class Vehiculo implements Serializable {
 	public Date getFechaSalida() {
 		return fechaSalida;
 	}
+
+	public void setFechaSalida(Date fechaSalida) {
+		this.fechaSalida = fechaSalida;
+	}
 	
 }

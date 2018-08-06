@@ -21,6 +21,8 @@ public final class VehiculoBuilder {
 	public static VehiculoEntity convertirAEntity(Vehiculo vehiculo) {
 		TipoVehiculoEntity tipoVehiculoEntity = TipoVehiculoBuilder.convertirAEntity(vehiculo.getTipoVehiculo());
 		VehiculoEntity vehiculoEntity = new VehiculoEntity();
+		vehiculoEntity.setFechaIngreso(vehiculo.getFechaIngreso());
+		vehiculoEntity.setFechaSalida(vehiculo.getFechaSalida());
 		vehiculoEntity.setPlaca(vehiculo.getPlaca());
 		vehiculoEntity.setCilindraje(vehiculo.getCilindraje());
 		vehiculoEntity.setTipoVehiculo(tipoVehiculoEntity);

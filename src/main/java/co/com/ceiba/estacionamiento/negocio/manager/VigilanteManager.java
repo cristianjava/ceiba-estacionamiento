@@ -1,5 +1,6 @@
 package co.com.ceiba.estacionamiento.negocio.manager;
 
+import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 
 public interface VigilanteManager {
@@ -16,6 +17,7 @@ public interface VigilanteManager {
 	 * registro para la placa siendo validado por la fecha
 	 * 
 	 * @param vehiculoEntity
+	 * @return 
 	 */
-	void salidaVehiculoParqueado (VehiculoEntity vehiculoEntity);
+	TiqueteEntity salidaVehiculoParqueado (VehiculoEntity vehiculoEntity);
 }

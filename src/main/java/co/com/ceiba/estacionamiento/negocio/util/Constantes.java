@@ -13,8 +13,8 @@ public class Constantes {
 	public static final String RESTRICCION_PARQUEO_PLACA = "El parqueadero no cuenta con cupos disponibles para estacionar el vehiculo";
 
 	public static class TipoVehiculo {
-		public static final int MOTO = 1;
-		public static final int CARRO = 2;
+		public static final int CARRO = 1;
+		public static final int MOTO = 2;
 	}
 
 	public static class CantidadMaximaVehiculos {
@@ -24,6 +24,7 @@ public class Constantes {
 
 	public static class Comunes {
 		public static final String A = "A";
+		public static final int TIEMPO_ADICIONAL_HORA_PARQUEO = 15;
 	}
 	
 }
