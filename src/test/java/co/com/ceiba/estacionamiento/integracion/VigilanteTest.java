@@ -58,8 +58,8 @@ public class VigilanteTest {
 	private static final String FECHA_MARTES = "18:25:00 07/08/2018";
 	
 	// datos pruebas fechas
-	private static final String FECHA_SALIDA_CARRO_TEST = "11:25:00 09/08/2018";
-	private static final String FECHA_SALIDA_MOTO_TEST = "18:25:00 08/08/2018";
+	private static final String FECHA_SALIDA_CARRO_TEST = "11:50:00 09/08/2018";
+	private static final String FECHA_SALIDA_MOTO_TEST = "20:25:00 08/08/2018";
 	
 	@Autowired
 	VigilanteManager vigilanteManager;
