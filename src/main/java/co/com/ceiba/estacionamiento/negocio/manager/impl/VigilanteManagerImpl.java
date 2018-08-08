@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,8 @@ import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateRestriccionPla
 @Repository
 public class VigilanteManagerImpl implements VigilanteManager {
 
+	private static final Logger LOGGER = Logger.getLogger(VigilanteManagerImpl.class.getName());
+	
 	@Autowired
 	VehiculoManager vehiculoManager;
 	
@@ -57,6 +60,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 			// Guardamos en VEHICULO PARQUEADO
 			vehiculoManager.guardar(vehiculoEntity);
 		} catch (EstacionamientoException e) {
+			LOGGER.info(e.getMessage());
 			throw new EstacionamientoException(e.getMessage());
 		}
 	}

@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import co.com.ceiba.estacionamiento.negocio.manager.impl.VigilanteManagerImpl;
 
-public class ParqueaderoUtil {
+public final class ParqueaderoUtil {
 
 	private static final Logger LOGGER = Logger.getLogger(VigilanteManagerImpl.class.getName());
 	

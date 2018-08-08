@@ -1,6 +1,6 @@
 package co.com.ceiba.estacionamiento.negocio.util;
 
-public class Constantes {
+public final class Constantes {
 
 	private Constantes() {
 		super();
