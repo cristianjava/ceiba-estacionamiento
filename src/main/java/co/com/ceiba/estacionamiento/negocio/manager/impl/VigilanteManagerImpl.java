@@ -113,25 +113,25 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		
 		// dependiendo del tipo vehiculo se calcula el total a pagar con las tarifas
 		if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TV_CARRO) {
-			if (tiqueteEntity.getDiasParqueo() != 0) {
+			if (tiqueteEntity.getDiasParqueo() != Constantes.C_CERO) {
 				double valorDiasCarro = Double.parseDouble(listaTarifas.get(Constantes.TT_DIA_CARRO).getValor()) * tiqueteEntity.getDiasParqueo();
 				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorDiasCarro);
 			}
-			if (tiqueteEntity.getHorasParqueo() != 0) {
+			if (tiqueteEntity.getHorasParqueo() != Constantes.C_CERO) {
 				double valorHoras = Double.parseDouble(listaTarifas.get(Constantes.TT_HORA_CARRO).getValor()) * tiqueteEntity.getHorasParqueo();
 				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorHoras);
 			}
 		} else if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TV_MOTO) {
-			if (tiqueteEntity.getDiasParqueo() != 0) {
+			if (tiqueteEntity.getDiasParqueo() != Constantes.C_CERO) {
 				double valorDiasMoto = Double.parseDouble(listaTarifas.get(Constantes.TT_DIA_MOTO).getValor()) * tiqueteEntity.getDiasParqueo();
 				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorDiasMoto);
 			}
-			if (tiqueteEntity.getHorasParqueo() != 0) {
+			if (tiqueteEntity.getHorasParqueo() != Constantes.C_CERO) {
 				double valorHorasMoto = Double.parseDouble(listaTarifas.get(Constantes.TT_HORA_MOTO).getValor()) * tiqueteEntity.getHorasParqueo();
 				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorHorasMoto);
 			}
 			// Si los cc son mayor a 500 se suma la tarifa 5 que pertenece a el sobrecargo cuando el cc es mayor
-			if (vehiculoEntity.getCilindraje() >= 500) {
+			if (vehiculoEntity.getCilindraje() >= Constantes.C_QUINIENTOS) {
 				double nuevoValorPorCC = Double.parseDouble(listaTarifas.get(Constantes.TT_CC_MAYOR_500).getValor());
 				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + nuevoValorPorCC);
 			}
