@@ -1,5 +1,7 @@
 package co.com.ceiba.estacionamiento.negocio.manager;
 
+import java.util.List;
+
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 
 public interface VehiculoManager {
@@ -33,5 +35,7 @@ public interface VehiculoManager {
 	 * @return
 	 */
 	int findVehiculosParqueadosTipo(int tipoVehiculo);
+
+	List<VehiculoEntity> findAll();
 	
 }

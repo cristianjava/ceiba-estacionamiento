@@ -1,5 +1,7 @@
 package co.com.ceiba.estacionamiento.negocio.manager.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +67,11 @@ public class VehiculoManagerImpl implements VehiculoManager {
 	@Override
 	public int findVehiculosParqueadosTipo(int tipoVehiculo) {
 		return vehiculoDAO.findVehiculosParqueadosTipo(tipoVehiculo);
+	}
+
+	@Override
+	public List<VehiculoEntity> findAll() {
+		return vehiculoDAO.findAll();
 	}
 
 }
