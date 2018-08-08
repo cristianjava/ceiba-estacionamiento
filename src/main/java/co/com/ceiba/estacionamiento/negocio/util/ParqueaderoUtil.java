@@ -27,11 +27,4 @@ public final class ParqueaderoUtil {
 		return nuevoFormato;
 	}
 	
-	public static boolean isEmptyNull(Long valor) {
-		boolean respuesta = false;
-		if (valor == 0) {
-			respuesta = true;
-		}
-		return respuesta;
-	}
 }
