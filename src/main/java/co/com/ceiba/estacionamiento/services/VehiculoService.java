@@ -15,6 +15,7 @@ import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
 import co.com.ceiba.estacionamiento.negocio.model.ResponseService;
+import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 
@@ -94,6 +95,7 @@ public class VehiculoService {
 	@RequestMapping(method = RequestMethod.POST ,value =  "/salidaParqueadero")
     public TiqueteEntity salidaParqueadero(@RequestBody Vehiculo vehiculo) {
 		try {
+			vehiculo.setTipoVehiculo(new TipoVehiculo());
 			return vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculo));
 		} catch (Exception e) {
 			throw new EstacionamientoException(e);
