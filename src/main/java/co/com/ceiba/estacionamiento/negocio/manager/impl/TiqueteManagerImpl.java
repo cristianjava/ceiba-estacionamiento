@@ -40,4 +40,9 @@ public class TiqueteManagerImpl implements TiqueteManager {
 		tiqueteDao.save(tiqueteEntity);
 	}
 
+	@Override
+	public Object findById(Long id) {
+		return tiqueteDao.findById(id);
+	}
+
 }

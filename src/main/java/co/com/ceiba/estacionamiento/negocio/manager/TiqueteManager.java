@@ -17,4 +17,12 @@ public interface TiqueteManager {
 	 * @param tiqueteEntity
 	 */
 	void actualizar (TiqueteEntity tiqueteEntity);
+
+	/**
+	 * Metodo para encontrar un tiquete por el id
+	 * 
+	 * @param long1
+	 * @return
+	 */
+	Object findById(Long long1);
 }

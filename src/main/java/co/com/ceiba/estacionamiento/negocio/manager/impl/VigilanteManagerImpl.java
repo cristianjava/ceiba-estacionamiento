@@ -1,12 +1,9 @@
 package co.com.ceiba.estacionamiento.negocio.manager.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +14,10 @@ import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
+import co.com.ceiba.estacionamiento.negocio.manager.TiqueteManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
-import co.com.ceiba.estacionamiento.negocio.util.Constantes.Comunes;
 import co.com.ceiba.estacionamiento.negocio.validate.Validate;
 import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateParqueoDisponible;
 import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateRestriccionPlaca;
@@ -33,6 +30,9 @@ public class VigilanteManagerImpl implements VigilanteManager {
 	
 	@Autowired
 	TarifaDao tarifaDao;
+	
+	@Autowired
+	TiqueteManager tiqueteManager;
 	
 	/*
 	 * (non-Javadoc)
@@ -68,10 +68,11 @@ public class VigilanteManagerImpl implements VigilanteManager {
 	@Override
 	public TiqueteEntity salidaVehiculoParqueado(VehiculoEntity vehiculoEntity) {
 		// Se elimina de VEHICULO PARQUEADO y se ingresa en TIQUETE PAGO
-		
+		TiqueteEntity tiqueteEntity = null;
 		try {
 			// Se busca el vehiculo parqueado y se calcula el tiempo en dias y horas
 			VehiculoEntity vehiculoParqueado = vehiculoManager.findByPlaca(vehiculoEntity.getPlaca());
+			vehiculoManager.eliminar(vehiculoParqueado);
 			vehiculoParqueado.setFechaSalida(vehiculoEntity.getFechaSalida());
 			LocalDateTime fechaIngreso = vehiculoParqueado.getFechaIngreso().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 			LocalDateTime fechaSalida = vehiculoParqueado.getFechaSalida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -80,40 +81,69 @@ public class VigilanteManagerImpl implements VigilanteManager {
 			long minutosParqueo = Duration.between(fechaIngreso, fechaSalida).toMinutes();
 
 			long minutosRestantesHora = minutosParqueo%60;
-			if (minutosRestantesHora > Comunes.TIEMPO_ADICIONAL_HORA_PARQUEO) {
+			if (minutosRestantesHora > Constantes.C_TIEMPO_ADICIONAL_HORA_PARQUEO) {
 				horasParqueo++;
 			}
 			
-			Long diasParqueado = horasParqueo/24;
-			Long horasParqueado = horasParqueo%24;
+			Long diasParqueados = horasParqueo/24;
+			Long horasParqueadas = horasParqueo%24;
 			
-			if (horasParqueado >= 9 && horasParqueado <= 24) {
-				diasParqueado++;
-				horasParqueado = 0L;
+			if (horasParqueadas >= 9 && horasParqueadas <= 24) {
+				diasParqueados++;
+				horasParqueadas = 0L;
 			}
 
-			// Se consultan las tarifas
-			List<TarifaEntity> listaTarifas = tarifaDao.findAll();
-			
-			TiqueteEntity tiqueteEntity = new TiqueteEntity();
+			tiqueteEntity = new TiqueteEntity();
 			tiqueteEntity.setPlaca(vehiculoEntity.getPlaca());
 			tiqueteEntity.setFechaIngreso(vehiculoEntity.getFechaIngreso());
 			tiqueteEntity.setFechaSalida(vehiculoEntity.getFechaSalida());
-			tiqueteEntity.setDiasParqueo(Integer.parseInt(diasParqueado.toString()));
-			tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueado.toString()));
-			
-			// dependiendo del tipo vehiculo se calcula el total a pagar con las tarifas
-			if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TipoVehiculo.CARRO) {
-				
-			} else if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TipoVehiculo.MOTO) {
-				// Si los cc son mayor a 500 se suma la tarifa 5 que pertenece a el sobrecargo cuando el cc es mayor
-				
-			}
+			tiqueteEntity.setDiasParqueo(Integer.parseInt(diasParqueados.toString()));
+			tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueadas.toString()));
+			this.calcularValor(vehiculoEntity,tiqueteEntity);
+			// Guardamos en TIQUETE y borramos VEHICULO_PARQUEADO
+			tiqueteManager.guardar(tiqueteEntity);
 		} catch (EstacionamientoException e) {
 			throw new EstacionamientoException(e.getMessage());
 		}
+		return tiqueteEntity;
+	}
 
-		return null;
+	/**
+	 *  Metodo para calcular el valor a pagar por el parqueo
+	 *  
+	 * @param tiqueteEntity 
+	 * @param vehiculoEntity 
+	 */
+	private void calcularValor(VehiculoEntity vehiculoEntity, TiqueteEntity tiqueteEntity) {
+
+		// Se consultan las tarifas
+		List<TarifaEntity> listaTarifas = tarifaDao.findAll();
+		
+		// dependiendo del tipo vehiculo se calcula el total a pagar con las tarifas
+		if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TV_CARRO) {
+			if (tiqueteEntity.getDiasParqueo() != 0) {
+				double valorDiasCarro = Double.parseDouble(listaTarifas.get(Constantes.TT_DIA_CARRO).getValor()) * tiqueteEntity.getDiasParqueo();
+				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorDiasCarro);
+			}
+			if (tiqueteEntity.getHorasParqueo() != 0) {
+				double valorHoras = Double.parseDouble(listaTarifas.get(Constantes.TT_HORA_CARRO).getValor()) * tiqueteEntity.getHorasParqueo();
+				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorHoras);
+			}
+		} else if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TV_MOTO) {
+			if (tiqueteEntity.getDiasParqueo() != 0) {
+				double valorDiasMoto = Double.parseDouble(listaTarifas.get(Constantes.TT_DIA_MOTO).getValor()) * tiqueteEntity.getDiasParqueo();
+				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorDiasMoto);
+			}
+			if (tiqueteEntity.getHorasParqueo() != 0) {
+				double valorHorasMoto = Double.parseDouble(listaTarifas.get(Constantes.TT_HORA_MOTO).getValor()) * tiqueteEntity.getHorasParqueo();
+				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + valorHorasMoto);
+			}
+			// Si los cc son mayor a 500 se suma la tarifa 5 que pertenece a el sobrecargo cuando el cc es mayor
+			if (vehiculoEntity.getCilindraje() >= 500) {
+				double nuevoValorPorCC = Double.parseDouble(listaTarifas.get(Constantes.TT_CC_MAYOR_500).getValor());
+				tiqueteEntity.setValorPago(tiqueteEntity.getValorPago() + nuevoValorPorCC);
+			}
+		}
 	}
 
 	

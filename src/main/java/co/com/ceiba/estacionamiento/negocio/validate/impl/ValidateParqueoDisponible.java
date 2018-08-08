@@ -7,8 +7,6 @@ import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 import co.com.ceiba.estacionamiento.negocio.validate.Validate;
-import co.com.ceiba.estacionamiento.negocio.util.Constantes.CantidadMaximaVehiculos;
-import co.com.ceiba.estacionamiento.negocio.util.Constantes.TipoVehiculo;
 
 public class ValidateParqueoDisponible implements Validate {
 
@@ -22,14 +20,14 @@ public class ValidateParqueoDisponible implements Validate {
 	@Transactional
 	@Override
 	public void validar(VehiculoEntity vehiculoEntity) {
-		if (vehiculoEntity.getTipoVehiculo().getId() == TipoVehiculo.CARRO) {
-			int catidadCarrosParqueados = vehiculoManager.findVehiculosParqueadosTipo(TipoVehiculo.CARRO);
-			if (catidadCarrosParqueados >= CantidadMaximaVehiculos.CANTIDAD_MAXIMA_CARROS) {
+		if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TV_CARRO) {
+			int catidadCarrosParqueados = vehiculoManager.findVehiculosParqueadosTipo(Constantes.TV_CARRO);
+			if (catidadCarrosParqueados >= Constantes.CMV_CANTIDAD_MAXIMA_CARROS) {
 				throw new EstacionamientoException(Constantes.PARQUEADERO_SIN_CUPO);
 			}
-		} else if (vehiculoEntity.getTipoVehiculo().getId() == TipoVehiculo.MOTO) {
-			int catidadCarrosParqueados = vehiculoManager.findVehiculosParqueadosTipo(TipoVehiculo.MOTO);
-			if (catidadCarrosParqueados >= CantidadMaximaVehiculos.CANTIDAD_MAXIMA_MOTOS) {
+		} else if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TV_MOTO) {
+			int catidadCarrosParqueados = vehiculoManager.findVehiculosParqueadosTipo(Constantes.TV_MOTO);
+			if (catidadCarrosParqueados >= Constantes.CMV_CANTIDAD_MAXIMA_MOTOS) {
 				throw new EstacionamientoException(Constantes.PARQUEADERO_SIN_CUPO);
 			}
 		}
