@@ -12,13 +12,6 @@ public interface TiqueteManager {
 	void guardar (TiqueteEntity tiqueteEntity);
 	
 	/**
-	 * Metodo para actualizar TIQUETE PARQUEO despues que el vehiculo sale del parqueadero
-	 * 
-	 * @param tiqueteEntity
-	 */
-	void actualizar (TiqueteEntity tiqueteEntity);
-
-	/**
 	 * Metodo para encontrar un tiquete por el id
 	 * 
 	 * @param long1

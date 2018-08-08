@@ -69,14 +69,11 @@ public class TiqueteTest {
 		// arrange
 		TiqueteTestDataBuilder tiqueteTestDataBuilder = new TiqueteTestDataBuilder();
 		Tiquete tiquete = tiqueteTestDataBuilder.build();
+
+		// act
+		tiqueteManager.guardar(TiqueteBuilder.convertirAEntity(tiquete));
 		
-		try {
-			// act
-			tiqueteManager.guardar(TiqueteBuilder.convertirAEntity(tiquete));
-			
-		} catch (EstacionamientoException e) {
-			// assert
-			Assert.assertEquals(Constantes.NO_SE_PUDO_INGRESAR_EL_TIQUETE, e.getMessage());
-		}
+		// assert
+		Assert.assertNotNull(tiquete);
 	}
 }

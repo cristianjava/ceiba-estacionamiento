@@ -8,7 +8,6 @@ public final class Constantes {
 
 	public static final String EL_VEHICULO_ESTA_PARQUEADO = "El vehiculo ya se encuentra parqueado";
 	public static final String EL_VEHICULO_NO_ESTA_PARQUEADO = "El vehiculo no se encuentra parqueado";
-	public static final String NO_SE_PUDO_INGRESAR_EL_TIQUETE = "Ocurrio un error al guardar el tiquete";
 	public static final String PARQUEADERO_SIN_CUPO = "El parqueadero no cuenta con cupos disponibles para estacionar el vehiculo";
 	public static final String RESTRICCION_PARQUEO_PLACA = "El parqueadero no cuenta con cupos disponibles para estacionar el vehiculo";
 
