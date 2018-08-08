@@ -13,8 +13,8 @@ public final class TipoVehiculoBuilder implements Serializable{
 	
 	public static TipoVehiculoEntity convertirAEntity(TipoVehiculo tipoVehiculo) {
 		TipoVehiculoEntity tipoVehiculoEntity = new TipoVehiculoEntity();
-		tipoVehiculoEntity.setId(tipoVehiculo.getId());
-		tipoVehiculoEntity.setDescripcion(tipoVehiculo.getDescripcion());
+		tipoVehiculoEntity.setId(tipoVehiculo != null && tipoVehiculo.getId() != null ? tipoVehiculo.getId() : null);
+		tipoVehiculoEntity.setDescripcion(tipoVehiculo != null && tipoVehiculo.getDescripcion() != null ? tipoVehiculo.getDescripcion() : null);
 		return tipoVehiculoEntity;
 	}
 }

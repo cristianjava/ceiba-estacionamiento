@@ -1,9 +1,11 @@
 package co.com.ceiba.estacionamiento.negocio.manager.impl;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import co.com.ceiba.estacionamiento.negocio.dao.TarifaDao;
 import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
+import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.TiqueteManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
@@ -67,7 +70,12 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		TiqueteEntity tiqueteEntity = null;
 		// Se busca el vehiculo parqueado y se calcula el tiempo en dias y horas
 		VehiculoEntity vehiculoParqueado = vehiculoManager.findByPlaca(vehiculoEntity.getPlaca());
-		vehiculoManager.eliminar(vehiculoParqueado);
+		if (vehiculoParqueado == null) {
+			throw new EstacionamientoException(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO);
+		}
+		Timestamp stamp = new Timestamp(vehiculoParqueado.getFechaIngreso().getTime());
+		Date formatoFechaIngreso = new Date(stamp.getTime());
+		vehiculoParqueado.setFechaIngreso(formatoFechaIngreso);
 		vehiculoParqueado.setFechaSalida(vehiculoEntity.getFechaSalida());
 		LocalDateTime fechaIngreso = vehiculoParqueado.getFechaIngreso().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		LocalDateTime fechaSalida = vehiculoParqueado.getFechaSalida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -89,13 +97,14 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		}
 
 		tiqueteEntity = new TiqueteEntity();
-		tiqueteEntity.setPlaca(vehiculoEntity.getPlaca());
-		tiqueteEntity.setFechaIngreso(vehiculoEntity.getFechaIngreso());
-		tiqueteEntity.setFechaSalida(vehiculoEntity.getFechaSalida());
+		tiqueteEntity.setPlaca(vehiculoParqueado.getPlaca());
+		tiqueteEntity.setFechaIngreso(vehiculoParqueado.getFechaIngreso());
+		tiqueteEntity.setFechaSalida(vehiculoParqueado.getFechaSalida());
 		tiqueteEntity.setDiasParqueo(Integer.parseInt(diasParqueados.toString()));
 		tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueadas.toString()));
-		this.calcularValor(vehiculoEntity,tiqueteEntity);
+		this.calcularValor(vehiculoParqueado,tiqueteEntity);
 		// Guardamos en TIQUETE y borramos VEHICULO_PARQUEADO
+		vehiculoManager.eliminar(vehiculoParqueado);
 		tiqueteManager.guardar(tiqueteEntity);
 		return tiqueteEntity;
 	}

@@ -38,7 +38,6 @@ public class VehiculoManagerImpl implements VehiculoManager {
 	 * (non-Javadoc)
 	 * @see co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager#eliminar(co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity)
 	 */
-	@Transactional
 	@Override
 	public void eliminar(VehiculoEntity vehiculoEntity) {
 		VehiculoEntity vehiculoParqueado = findByPlaca(vehiculoEntity.getPlaca());
@@ -52,7 +51,6 @@ public class VehiculoManagerImpl implements VehiculoManager {
 	 * (non-Javadoc)
 	 * @see co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager#findByPlaca(java.lang.String)
 	 */
-	@Transactional
 	@Override
 	public VehiculoEntity findByPlaca(String placa) {
 		VehiculoEntity vehiculoEntity = null;
