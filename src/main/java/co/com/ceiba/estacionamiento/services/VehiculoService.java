@@ -44,6 +44,7 @@ public class VehiculoService {
 			responseService.setMensaje("Exito");
 		} catch (Exception e) {
 			responseService.setMensaje(e.getMessage());
+			throw new RuntimeException(e);
 		}
 		return responseService;
     }
