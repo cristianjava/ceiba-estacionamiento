@@ -10,6 +10,9 @@ public final class Constantes {
 	public static final String EL_VEHICULO_NO_ESTA_PARQUEADO = "El vehiculo no se encuentra parqueado";
 	public static final String PARQUEADERO_SIN_CUPO = "El parqueadero no cuenta con cupos disponibles para estacionar el vehiculo";
 	public static final String RESTRICCION_PARQUEO_PLACA = "solo pueden ingresar al parqueadero los días lunes y domingos";
+	public static final String HTTP_CODIGO_EXITO = "200";
+	public static final String HTTP_MENSAJE_EXITO = "Exito";
+	public static final String HTTP_DESCRIPCION_EXITO = "La petición se ejecutó correctamente";
 
 	public static final int TV_CARRO = 1;
 	public static final int TV_MOTO = 2;
