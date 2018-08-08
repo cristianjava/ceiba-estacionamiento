@@ -69,42 +69,38 @@ public class VigilanteManagerImpl implements VigilanteManager {
 	public TiqueteEntity salidaVehiculoParqueado(VehiculoEntity vehiculoEntity) {
 		// Se elimina de VEHICULO PARQUEADO y se ingresa en TIQUETE PAGO
 		TiqueteEntity tiqueteEntity = null;
-		try {
-			// Se busca el vehiculo parqueado y se calcula el tiempo en dias y horas
-			VehiculoEntity vehiculoParqueado = vehiculoManager.findByPlaca(vehiculoEntity.getPlaca());
-			vehiculoManager.eliminar(vehiculoParqueado);
-			vehiculoParqueado.setFechaSalida(vehiculoEntity.getFechaSalida());
-			LocalDateTime fechaIngreso = vehiculoParqueado.getFechaIngreso().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-			LocalDateTime fechaSalida = vehiculoParqueado.getFechaSalida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-			
-			long horasParqueo = Duration.between(fechaIngreso, fechaSalida).toHours();
-			long minutosParqueo = Duration.between(fechaIngreso, fechaSalida).toMinutes();
+		// Se busca el vehiculo parqueado y se calcula el tiempo en dias y horas
+		VehiculoEntity vehiculoParqueado = vehiculoManager.findByPlaca(vehiculoEntity.getPlaca());
+		vehiculoManager.eliminar(vehiculoParqueado);
+		vehiculoParqueado.setFechaSalida(vehiculoEntity.getFechaSalida());
+		LocalDateTime fechaIngreso = vehiculoParqueado.getFechaIngreso().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		LocalDateTime fechaSalida = vehiculoParqueado.getFechaSalida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		
+		long horasParqueo = Duration.between(fechaIngreso, fechaSalida).toHours();
+		long minutosParqueo = Duration.between(fechaIngreso, fechaSalida).toMinutes();
 
-			long minutosRestantesHora = minutosParqueo%60;
-			if (minutosRestantesHora > Constantes.C_TIEMPO_ADICIONAL_HORA_PARQUEO) {
-				horasParqueo++;
-			}
-			
-			Long diasParqueados = horasParqueo/24;
-			Long horasParqueadas = horasParqueo%24;
-			
-			if (horasParqueadas >= 9 && horasParqueadas <= 24) {
-				diasParqueados++;
-				horasParqueadas = 0L;
-			}
-
-			tiqueteEntity = new TiqueteEntity();
-			tiqueteEntity.setPlaca(vehiculoEntity.getPlaca());
-			tiqueteEntity.setFechaIngreso(vehiculoEntity.getFechaIngreso());
-			tiqueteEntity.setFechaSalida(vehiculoEntity.getFechaSalida());
-			tiqueteEntity.setDiasParqueo(Integer.parseInt(diasParqueados.toString()));
-			tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueadas.toString()));
-			this.calcularValor(vehiculoEntity,tiqueteEntity);
-			// Guardamos en TIQUETE y borramos VEHICULO_PARQUEADO
-			tiqueteManager.guardar(tiqueteEntity);
-		} catch (EstacionamientoException e) {
-			throw new EstacionamientoException(e.getMessage());
+		long minutosRestantesHora = minutosParqueo%60;
+		if (minutosRestantesHora > Constantes.C_TIEMPO_ADICIONAL_HORA_PARQUEO) {
+			horasParqueo++;
 		}
+		
+		Long diasParqueados = horasParqueo/24;
+		Long horasParqueadas = horasParqueo%24;
+		
+		if (horasParqueadas >= 9 && horasParqueadas <= 24) {
+			diasParqueados++;
+			horasParqueadas = 0L;
+		}
+
+		tiqueteEntity = new TiqueteEntity();
+		tiqueteEntity.setPlaca(vehiculoEntity.getPlaca());
+		tiqueteEntity.setFechaIngreso(vehiculoEntity.getFechaIngreso());
+		tiqueteEntity.setFechaSalida(vehiculoEntity.getFechaSalida());
+		tiqueteEntity.setDiasParqueo(Integer.parseInt(diasParqueados.toString()));
+		tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueadas.toString()));
+		this.calcularValor(vehiculoEntity,tiqueteEntity);
+		// Guardamos en TIQUETE y borramos VEHICULO_PARQUEADO
+		tiqueteManager.guardar(tiqueteEntity);
 		return tiqueteEntity;
 	}
 
