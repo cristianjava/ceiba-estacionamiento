@@ -62,6 +62,8 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		} catch (EstacionamientoException e) {
 			LOGGER.info(e.getMessage());
 			throw new EstacionamientoException(e.getMessage());
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
 		}
 	}
 
