@@ -11,6 +11,17 @@ public final class TarifaBuilder implements Serializable{
 
 	private TarifaBuilder() {}
 	
+	public static Tarifa convertirAObject(TarifaEntity tarifaEntity) {
+		Tarifa tarifa = null;
+		if(tarifaEntity != null) {
+			tarifa = new Tarifa();
+			tarifa.setIdTarifa(tarifaEntity.getIdTarifa());
+			tarifa.setDescripcionTarifa(tarifaEntity.getDescripcionTarifa());
+			tarifa.setValor(tarifaEntity.getValor());
+		}
+		return tarifa;
+	}
+	
 	public static TarifaEntity convertirAEntity(Tarifa tarifa) {
 		TarifaEntity tarifaEntity = new TarifaEntity();
 		tarifaEntity.setIdTarifa(tarifa.getIdTarifa());
