@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
+import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
 import co.com.ceiba.estacionamiento.negocio.model.ResponseService;
@@ -44,7 +45,7 @@ public class VehiculoService {
 			responseService.setMensaje("Exito");
 		} catch (Exception e) {
 			responseService.setMensaje(e.getMessage());
-			throw new RuntimeException(e);
+			throw new EstacionamientoException(e);
 		}
 		return responseService;
     }

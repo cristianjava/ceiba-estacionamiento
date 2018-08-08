@@ -7,4 +7,8 @@ public class EstacionamientoException extends RuntimeException {
 	public EstacionamientoException(String message) {
 		super(message);
 	}
+
+	public EstacionamientoException(Exception e) {
+		super(e);
+	}
 }
