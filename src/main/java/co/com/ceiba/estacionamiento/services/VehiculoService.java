@@ -3,6 +3,7 @@ package co.com.ceiba.estacionamiento.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,7 @@ public class VehiculoService {
 	 * 
 	 * @return
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/buscarVehiculos")
 	public List<VehiculoEntity> buscarVehiculos() {
 		try {
@@ -53,6 +55,7 @@ public class VehiculoService {
 	 * @param vehiculo
 	 * @return
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/buscarVehiculoPlaca")
 	public VehiculoEntity buscarVehiculoPlaca(@RequestBody Vehiculo vehiculo) {
 		try {
@@ -72,6 +75,7 @@ public class VehiculoService {
 	 * @param vehiculo
 	 * @return
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/registrarParqueo")
     public ResponseService registrarParqueo(@RequestBody Vehiculo vehiculo) {
 		ResponseService responseService = new ResponseService();
@@ -92,6 +96,7 @@ public class VehiculoService {
 	 * @param vehiculo
 	 * @return
 	 */
+	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/salidaParqueadero")
     public TiqueteEntity salidaParqueadero(@RequestBody Vehiculo vehiculo) {
 		try {
