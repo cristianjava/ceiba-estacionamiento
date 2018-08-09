@@ -36,6 +36,11 @@ dependencies {
 	testCompile 'org.mockito:mockito-all:1.10.19'
 }
 
+bootJar {
+    baseName = 'gs-rest-service-cors'
+    version =  '0.1.0'
+}
+
 test {
 	jacoco {
 		append = false
