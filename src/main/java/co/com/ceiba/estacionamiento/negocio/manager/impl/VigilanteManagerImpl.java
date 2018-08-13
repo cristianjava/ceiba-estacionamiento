@@ -95,6 +95,10 @@ public class VigilanteManagerImpl implements VigilanteManager {
 			diasParqueados++;
 			horasParqueadas = 0L;
 		}
+		
+		if (diasParqueados == 0 && horasParqueadas == 0) {
+			horasParqueadas = 1L;
+		}
 
 		tiqueteEntity = new TiqueteEntity();
 		tiqueteEntity.setPlaca(vehiculoParqueado.getPlaca());
@@ -105,7 +109,6 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		this.calcularValor(vehiculoParqueado,tiqueteEntity);
 		// Guardamos en TIQUETE y borramos VEHICULO_PARQUEADO
 		vehiculoManager.eliminar(vehiculoParqueado);
-		tiqueteManager.guardar(tiqueteEntity);
 		return tiqueteEntity;
 	}
 

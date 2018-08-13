@@ -1,5 +1,6 @@
 package co.com.ceiba.estacionamiento.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,26 +51,6 @@ public class VehiculoService {
 	}
 
 	/**
-	 * Servicio para consultar un vehiculo parqueado por la placa
-	 * 
-	 * @param vehiculo
-	 * @return
-	 */
-	@CrossOrigin(origins = "http://localhost:4200")
-	@RequestMapping(method = RequestMethod.POST ,value =  "/buscarVehiculoPlaca")
-	public VehiculoEntity buscarVehiculoPlaca(@RequestBody Vehiculo vehiculo) {
-		try {
-			VehiculoEntity vehiculoEntity = vehiculoManager.findByPlaca(vehiculo.getPlaca());
-			if (vehiculoEntity == null) {
-				throw new EstacionamientoException(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO);
-			}
-			return vehiculoEntity;
-		} catch (Exception e) {
-			throw new EstacionamientoException(e);
-		}
-	}
-
-	/**
 	 * Servicio rest para registrar un vehiculo al parqueadero
 	 * 
 	 * @param vehiculo
@@ -80,6 +61,9 @@ public class VehiculoService {
     public ResponseService registrarParqueo(@RequestBody Vehiculo vehiculo) {
 		ResponseService responseService = new ResponseService();
 		try {
+			if (vehiculo.getFechaIngreso() == null) {
+				vehiculo.setFechaIngreso(new Date());
+			}
 			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
 			responseService.setCodigo(Constantes.HTTP_CODIGO_EXITO);
 			responseService.setMensaje(Constantes.HTTP_MENSAJE_EXITO);
@@ -91,6 +75,22 @@ public class VehiculoService {
     }
 
 	/**
+	 * Servicio para consultar un vehiculo parqueado por la placa
+	 * 
+	 * @param vehiculo
+	 * @return
+	 */
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(method = RequestMethod.POST ,value =  "/buscarVehiculoPlaca")
+	public VehiculoEntity buscarVehiculoPlaca(@RequestBody Vehiculo vehiculo) {
+		try {
+			return vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		} catch (Exception e) {
+			throw new EstacionamientoException(e);
+		}
+	}
+
+	/**
 	 * Servicio para desparquear un vehiculo y para calcular el valor a pagar
 	 * 
 	 * @param vehiculo
@@ -100,6 +100,9 @@ public class VehiculoService {
 	@RequestMapping(method = RequestMethod.POST ,value =  "/salidaParqueadero")
     public TiqueteEntity salidaParqueadero(@RequestBody Vehiculo vehiculo) {
 		try {
+			if (vehiculo.getFechaSalida() == null) {
+				vehiculo.setFechaSalida(new Date());
+			}
 			vehiculo.setTipoVehiculo(new TipoVehiculo());
 			return vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculo));
 		} catch (Exception e) {
