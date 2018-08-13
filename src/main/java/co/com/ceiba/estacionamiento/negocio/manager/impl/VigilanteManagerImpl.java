@@ -109,6 +109,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		this.calcularValor(vehiculoParqueado,tiqueteEntity);
 		// Guardamos en TIQUETE y borramos VEHICULO_PARQUEADO
 		vehiculoManager.eliminar(vehiculoParqueado);
+		tiqueteManager.guardar(tiqueteEntity);
 		return tiqueteEntity;
 	}
 
