@@ -84,7 +84,9 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		long minutosParqueo = Duration.between(fechaIngreso, fechaSalida).toMinutes();
 
 		long minutosRestantesHora = minutosParqueo%60;
-		horasParqueo = (minutosRestantesHora > Constantes.C_TIEMPO_ADICIONAL_HORA_PARQUEO) ? horasParqueo++ : horasParqueo;
+		if (minutosRestantesHora > Constantes.C_TIEMPO_ADICIONAL_HORA_PARQUEO) {
+			horasParqueo++;
+		}
 		
 		Long diasParqueados = horasParqueo/24;
 		Long horasParqueadas = horasParqueo%24;
