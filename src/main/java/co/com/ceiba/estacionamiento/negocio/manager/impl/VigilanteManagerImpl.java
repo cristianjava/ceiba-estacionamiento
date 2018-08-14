@@ -94,9 +94,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		if (horasParqueadas >= 9 && horasParqueadas <= 24) {
 			diasParqueados++;
 			horasParqueadas = 0L;
-		}
-		
-		if (diasParqueados == 0 && horasParqueadas == 0) {
+		} else if (diasParqueados == 0 && horasParqueadas == 0) {
 			horasParqueadas = 1L;
 		}
 
