@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
+import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
 import co.com.ceiba.estacionamiento.negocio.model.ResponseService;
@@ -50,7 +51,11 @@ public class VehiculoService {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/buscarVehiculoPlaca")
 	public VehiculoEntity buscarVehiculoPlaca(@RequestBody Vehiculo vehiculo) {
-		return vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		VehiculoEntity vehiculoEntity = vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		if (vehiculoEntity == null) {
+			throw new EstacionamientoException(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO);
+		}
+		return vehiculoEntity;
 	}
 
 	/**
@@ -62,6 +67,10 @@ public class VehiculoService {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/registrarParqueo")
     public ResponseService registrarParqueo(@RequestBody Vehiculo vehiculo) {
+		VehiculoEntity vehiculoEntity = vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		if (vehiculoEntity != null) {
+			throw new EstacionamientoException(Constantes.EL_VEHICULO_ESTA_PARQUEADO);
+		}
 		vehiculo.setFechaIngreso(vehiculo.getFechaIngreso() == null ? new Date() : vehiculo.getFechaIngreso());
 		ResponseService responseService = new ResponseService();
 		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
