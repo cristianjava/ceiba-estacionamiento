@@ -14,6 +14,7 @@ import co.com.ceiba.estacionamiento.EstacionamientoApplication;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
+import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 import co.com.ceiba.estacionamiento.services.VehiculoService;
 import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 
@@ -22,6 +23,10 @@ import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 @DataJpaTest
 public class VehiculoTest {
 
+	// datos pruebas fechas
+	private static final String FECHA_INGRESO_TEST_DOS = "10:00:00 08/08/2018";
+	private static final String FECHA_SALIDA_TEST_DOS = "10:30:00 08/08/2018";
+	
 	@Autowired
 	VehiculoManager vehiculoManager;
 
@@ -32,7 +37,7 @@ public class VehiculoTest {
 	public void serviceParqueoBusca() {
 
 		// arrange
-		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
+		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conFechaIngreso(null);
 		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
 		List<VehiculoEntity> listaVehiculos = null;
 		
@@ -65,6 +70,22 @@ public class VehiculoTest {
 
 		// arrange
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
+		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
+		
+		// act
+		vehiculoService.registrarParqueo(vehiculoCarro);
+		vehiculoService.salidaParqueadero(vehiculoCarro);
+		
+		// assert
+		Assert.assertNull(vehiculoService.buscarVehiculoPlaca(vehiculoCarro));
+	}
+
+	@Test
+	public void serviceParqueoDesparqueoPruebaDos() {
+
+		// arrange
+		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_DOS))
+				.conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_DOS));
 		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
 		
 		// act
