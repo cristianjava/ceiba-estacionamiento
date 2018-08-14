@@ -62,7 +62,9 @@ public class VehiculoService {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/registrarParqueo")
     public ResponseService registrarParqueo(@RequestBody Vehiculo vehiculo) {
-		vehiculo.setFechaIngreso(vehiculo.getFechaIngreso() == null ? new Date() : vehiculo.getFechaIngreso());
+		if (vehiculo.getFechaIngreso() == null) {
+			vehiculo.setFechaIngreso(new Date());
+		}
 		ResponseService responseService = new ResponseService();
 		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
 		responseService.setCodigo(Constantes.HTTP_CODIGO_EXITO);
@@ -80,7 +82,9 @@ public class VehiculoService {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/salidaParqueadero")
     public TiqueteEntity salidaParqueadero(@RequestBody Vehiculo vehiculo) {
-		vehiculo.setFechaSalida(vehiculo.getFechaSalida() == null ? new Date() : vehiculo.getFechaSalida());
+		if (vehiculo.getFechaSalida() == null) {
+			vehiculo.setFechaSalida(new Date());
+		}
 		vehiculo.setTipoVehiculo(new TipoVehiculo());
 		return vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculo));
     }
