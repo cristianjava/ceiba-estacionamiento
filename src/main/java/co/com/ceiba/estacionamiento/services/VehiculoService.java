@@ -51,6 +51,22 @@ public class VehiculoService {
 	}
 
 	/**
+	 * Servicio para consultar un vehiculo parqueado por la placa
+	 * 
+	 * @param vehiculo
+	 * @return
+	 */
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(method = RequestMethod.POST ,value =  "/buscarVehiculoPlaca")
+	public VehiculoEntity buscarVehiculoPlaca(@RequestBody Vehiculo vehiculo) {
+		try {
+			return vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		} catch (Exception e) {
+			throw new EstacionamientoException(e);
+		}
+	}
+
+	/**
 	 * Servicio rest para registrar un vehiculo al parqueadero
 	 * 
 	 * @param vehiculo
@@ -73,22 +89,6 @@ public class VehiculoService {
 		}
 		return responseService;
     }
-
-	/**
-	 * Servicio para consultar un vehiculo parqueado por la placa
-	 * 
-	 * @param vehiculo
-	 * @return
-	 */
-	@CrossOrigin(origins = "http://localhost:4200")
-	@RequestMapping(method = RequestMethod.POST ,value =  "/buscarVehiculoPlaca")
-	public VehiculoEntity buscarVehiculoPlaca(@RequestBody Vehiculo vehiculo) {
-		try {
-			return vehiculoManager.findByPlaca(vehiculo.getPlaca());
-		} catch (Exception e) {
-			throw new EstacionamientoException(e);
-		}
-	}
 
 	/**
 	 * Servicio para desparquear un vehiculo y para calcular el valor a pagar
