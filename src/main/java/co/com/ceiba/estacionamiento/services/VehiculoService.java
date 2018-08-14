@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
-import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
 import co.com.ceiba.estacionamiento.negocio.model.ResponseService;
@@ -39,11 +38,7 @@ public class VehiculoService {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/buscarVehiculos")
 	public List<VehiculoEntity> buscarVehiculos() {
-		List<VehiculoEntity> vehiculosEntity = vehiculoManager.findAll();
-		if (vehiculosEntity.isEmpty()) {
-			throw new EstacionamientoException(Constantes.NO_HAY_VEHICULOS_PARQUEADERO);
-		}
-		return vehiculosEntity;
+		return vehiculoManager.findAll();
 	}
 
 	/**
@@ -67,10 +62,10 @@ public class VehiculoService {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/registrarParqueo")
     public ResponseService registrarParqueo(@RequestBody Vehiculo vehiculo) {
-		ResponseService responseService = new ResponseService();
 		if (vehiculo.getFechaIngreso() == null) {
 			vehiculo.setFechaIngreso(new Date());
 		}
+		ResponseService responseService = new ResponseService();
 		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
 		responseService.setCodigo(Constantes.HTTP_CODIGO_EXITO);
 		responseService.setMensaje(Constantes.HTTP_MENSAJE_EXITO);
