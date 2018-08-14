@@ -84,9 +84,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		long minutosParqueo = Duration.between(fechaIngreso, fechaSalida).toMinutes();
 
 		long minutosRestantesHora = minutosParqueo%60;
-		if (minutosRestantesHora > Constantes.C_TIEMPO_ADICIONAL_HORA_PARQUEO) {
-			horasParqueo++;
-		}
+		horasParqueo = (minutosRestantesHora > Constantes.C_TIEMPO_ADICIONAL_HORA_PARQUEO) ? horasParqueo++ : horasParqueo;
 		
 		Long diasParqueados = horasParqueo/24;
 		Long horasParqueadas = horasParqueo%24;
@@ -94,9 +92,9 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		if (horasParqueadas >= 9 && horasParqueadas <= 24) {
 			diasParqueados++;
 			horasParqueadas = 0L;
-		} else if (diasParqueados == 0 && horasParqueadas == 0) {
-			horasParqueadas = 1L;
-		}
+		} 
+		
+		horasParqueadas = (diasParqueados == 0 && horasParqueadas == 0) ? 1L : horasParqueadas;
 
 		tiqueteEntity = new TiqueteEntity();
 		tiqueteEntity.setPlaca(vehiculoParqueado.getPlaca());
