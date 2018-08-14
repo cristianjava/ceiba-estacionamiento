@@ -77,7 +77,7 @@ public class VehiculoTest {
 		vehiculoService.salidaParqueadero(vehiculoCarro);
 		
 		// assert
-		Assert.assertNull(vehiculoService.buscarVehiculoPlaca(vehiculoCarro));
+		Assert.assertNull(vehiculoManager.findByPlaca(vehiculoCarro.getPlaca()));
 	}
 
 	@Test
@@ -93,6 +93,6 @@ public class VehiculoTest {
 		vehiculoService.salidaParqueadero(vehiculoCarro);
 		
 		// assert
-		Assert.assertNull(vehiculoService.buscarVehiculoPlaca(vehiculoCarro));
+		Assert.assertNull(vehiculoManager.findByPlaca(vehiculoCarro.getPlaca()));
 	}
 }
