@@ -24,7 +24,7 @@ public final class Constantes {
 	public static final String C_A = "A";
 	public static final int C_TIEMPO_ADICIONAL_HORA_PARQUEO = 15;
 	public static final int C_QUINIENTOS = 500;
-	public static final int C_CERO = 15;
+	public static final int C_CERO = 0;
 
 	public static final int TT_HORA_CARRO = 0;
 	public static final int TT_DIA_CARRO = 1;

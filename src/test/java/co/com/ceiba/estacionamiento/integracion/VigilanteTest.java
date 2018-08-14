@@ -233,7 +233,7 @@ public class VigilanteTest {
 			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoCarro));
 			
 			// assert
-			Assert.assertNotNull(tiqueteManager.findById(tiqueteEntity.getIdTiquete()));
+			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -259,7 +259,7 @@ public class VigilanteTest {
 			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			// assert
-			Assert.assertNotNull(tiqueteManager.findById(tiqueteEntity.getIdTiquete()));
+			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}

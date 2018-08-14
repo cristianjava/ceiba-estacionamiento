@@ -107,9 +107,8 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		tiqueteEntity.setDiasParqueo(Integer.parseInt(diasParqueados.toString()));
 		tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueadas.toString()));
 		this.calcularValor(vehiculoParqueado,tiqueteEntity);
-		// Guardamos en TIQUETE y borramos VEHICULO_PARQUEADO
+		// Borramos VEHICULO_PARQUEADO
 		vehiculoManager.eliminar(vehiculoParqueado);
-		tiqueteManager.guardar(tiqueteEntity);
 		return tiqueteEntity;
 	}
 
