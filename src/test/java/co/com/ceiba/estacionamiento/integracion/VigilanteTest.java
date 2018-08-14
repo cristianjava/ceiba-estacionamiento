@@ -44,6 +44,7 @@ public class VigilanteTest {
 	private static final String FECHA_INGRESO = hourdateFormat.format(new Date());
 	private static final String FECHA_SALIDA = null;
 	private static final TipoVehiculo TIPO_VEHICULO = new TipoVehiculo("Moto", 2L);
+	private static final TipoVehiculo TIPO_VEHICULO_CARRO = new TipoVehiculo("Carro", 1L);
 
 	private static final String LETRAS_PLACA_MOTO = "INI";
 	private static final String LETRAFIN_PLACA_MOTO = "A";
@@ -56,10 +57,17 @@ public class VigilanteTest {
 	// datos de prueba con restricciones
 	private static final String PLACA_RESTRICCION = "AIK64A";
 	private static final String FECHA_MARTES = "18:25:00 07/08/2018";
+	private static final int CILINDRAJE_MENOR = 160;
 	
 	// datos pruebas fechas
 	private static final String FECHA_SALIDA_CARRO_TEST = "11:50:00 09/08/2018";
 	private static final String FECHA_SALIDA_MOTO_TEST = "20:25:00 08/08/2018";
+	private static final String FECHA_INGRESO_TEST_DOS = "10:00:00 08/08/2018";
+	private static final String FECHA_SALIDA_TEST_DOS = "10:30:00 08/08/2018";
+	private static final String FECHA_INGRESO_TEST_TRES = "10:00:00 08/08/2018";
+	private static final String FECHA_SALIDA_TEST_TRES = "20:00:00 08/08/2018";
+	private static final String FECHA_INGRESO_TEST_CUATRO = "10:00:00 08/08/2018";
+	private static final String FECHA_SALIDA_TEST_CUATRO = "10:14:00 08/08/2018";
 	
 	@Autowired
 	VigilanteManager vigilanteManager;
@@ -255,6 +263,136 @@ public class VigilanteTest {
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_MOTO_TEST);
+			vehiculoMoto.setFechaSalida(fechaFinal);
+			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			// assert
+			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+		} catch (ParseException e) {
+			LOGGER.info(e.getMessage());
+		}
+	}
+
+	@Test
+	public void desparqueoVehiculoPruebaDos() {
+
+		try {
+			// arrange
+			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
+					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_DOS)).
+					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_DOS)).conTipoVehiculo(TIPO_VEHICULO);
+
+			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			
+			// act
+			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_DOS);
+			vehiculoMoto.setFechaSalida(fechaFinal);
+			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			// assert
+			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+		} catch (ParseException e) {
+			LOGGER.info(e.getMessage());
+		}
+	}
+
+	@Test
+	public void desparqueoVehiculoPruebaTres() {
+
+		try {
+			// arrange
+			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
+					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_TRES)).
+					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_TRES)).conTipoVehiculo(TIPO_VEHICULO);
+
+			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			
+			// act
+			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_TRES);
+			vehiculoMoto.setFechaSalida(fechaFinal);
+			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			// assert
+			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+		} catch (ParseException e) {
+			LOGGER.info(e.getMessage());
+		}
+	}
+
+	@Test
+	public void desparqueoVehiculoPruebaCuatro() {
+
+		try {
+			// arrange
+			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
+					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_CUATRO)).
+					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_CUATRO)).conTipoVehiculo(TIPO_VEHICULO);
+
+			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			
+			// act
+			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_CUATRO);
+			vehiculoMoto.setFechaSalida(fechaFinal);
+			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			// assert
+			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+		} catch (ParseException e) {
+			LOGGER.info(e.getMessage());
+		}
+	}
+
+	@Test
+	public void desparqueoVehiculoPruebaCinco() {
+
+		try {
+			// arrange
+			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().
+					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_TRES)).
+					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_TRES)).conTipoVehiculo(TIPO_VEHICULO_CARRO);
+
+			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			
+			// act
+			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_TRES);
+			vehiculoMoto.setFechaSalida(fechaFinal);
+			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			// assert
+			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+		} catch (ParseException e) {
+			LOGGER.info(e.getMessage());
+		}
+	}
+
+	@Test
+	public void desparqueoVehiculoPruebaSeis() {
+
+		try {
+			// arrange
+			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE_MENOR).
+					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_CUATRO)).
+					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_CUATRO)).conTipoVehiculo(TIPO_VEHICULO);
+
+			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			
+			// act
+			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_CUATRO);
 			vehiculoMoto.setFechaSalida(fechaFinal);
 			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
