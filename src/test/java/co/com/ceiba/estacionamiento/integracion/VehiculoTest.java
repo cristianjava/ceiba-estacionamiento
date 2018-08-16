@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
-import co.com.ceiba.estacionamiento.api.VehiculoService;
+import co.com.ceiba.estacionamiento.api.VehiculoRest;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
@@ -31,7 +31,7 @@ public class VehiculoTest {
 	VehiculoManager vehiculoManager;
 
 	@Autowired
-	VehiculoService vehiculoService;
+	VehiculoRest vehiculoRest;
 
 	@Test
 	public void serviceParqueoBusca() {
@@ -42,8 +42,8 @@ public class VehiculoTest {
 		List<VehiculoEntity> listaVehiculos = null;
 		
 		// act
-		vehiculoService.registrarParqueo(vehiculoCarro);
-		listaVehiculos = vehiculoService.buscarVehiculos();
+		vehiculoRest.registrarParqueo(vehiculoCarro);
+		listaVehiculos = vehiculoRest.buscarVehiculos();
 		
 		// assert
 		Assert.assertNotNull(listaVehiculos);
@@ -58,8 +58,8 @@ public class VehiculoTest {
 		VehiculoEntity vehiculoEntity = null;
 		
 		// act
-		vehiculoService.registrarParqueo(vehiculoCarro);
-		vehiculoEntity = vehiculoService.buscarVehiculoPlaca(vehiculoCarro);
+		vehiculoRest.registrarParqueo(vehiculoCarro);
+		vehiculoEntity = vehiculoRest.buscarVehiculoPlaca(vehiculoCarro);
 		
 		// assert
 		Assert.assertNotNull(vehiculoEntity);
@@ -73,8 +73,8 @@ public class VehiculoTest {
 		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
 		
 		// act
-		vehiculoService.registrarParqueo(vehiculoCarro);
-		vehiculoService.salidaParqueadero(vehiculoCarro);
+		vehiculoRest.registrarParqueo(vehiculoCarro);
+		vehiculoRest.salidaParqueadero(vehiculoCarro);
 		
 		// assert
 		Assert.assertNull(vehiculoManager.findByPlaca(vehiculoCarro.getPlaca()));
@@ -89,8 +89,8 @@ public class VehiculoTest {
 		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
 		
 		// act
-		vehiculoService.registrarParqueo(vehiculoCarro);
-		vehiculoService.salidaParqueadero(vehiculoCarro);
+		vehiculoRest.registrarParqueo(vehiculoCarro);
+		vehiculoRest.salidaParqueadero(vehiculoCarro);
 		
 		// assert
 		Assert.assertNull(vehiculoManager.findByPlaca(vehiculoCarro.getPlaca()));
