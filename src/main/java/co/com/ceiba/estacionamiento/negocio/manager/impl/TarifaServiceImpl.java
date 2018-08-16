@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.com.ceiba.estacionamiento.negocio.dao.TarifaDao;
 import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
-import co.com.ceiba.estacionamiento.negocio.manager.TarifaService;
+import co.com.ceiba.estacionamiento.negocio.service.TarifaService;
 
 @Service
 public class TarifaServiceImpl implements TarifaService{

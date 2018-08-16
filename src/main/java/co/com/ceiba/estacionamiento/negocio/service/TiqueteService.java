@@ -1,4 +1,4 @@
-package co.com.ceiba.estacionamiento.negocio.manager;
+package co.com.ceiba.estacionamiento.negocio.service;
 
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 

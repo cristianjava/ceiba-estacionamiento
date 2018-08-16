@@ -14,11 +14,11 @@ import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
-import co.com.ceiba.estacionamiento.negocio.manager.VehiculoService;
-import co.com.ceiba.estacionamiento.negocio.manager.VigilanteService;
 import co.com.ceiba.estacionamiento.negocio.model.ResponseService;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
+import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
+import co.com.ceiba.estacionamiento.negocio.service.VigilanteService;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 
 @RestController

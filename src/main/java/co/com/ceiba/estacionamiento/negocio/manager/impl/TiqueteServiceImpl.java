@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import co.com.ceiba.estacionamiento.negocio.dao.TiqueteDao;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
-import co.com.ceiba.estacionamiento.negocio.manager.TiqueteService;
+import co.com.ceiba.estacionamiento.negocio.service.TiqueteService;
 
 @Service
 public class TiqueteServiceImpl implements TiqueteService {

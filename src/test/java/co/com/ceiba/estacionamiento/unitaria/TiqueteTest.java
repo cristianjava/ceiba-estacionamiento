@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.TiqueteBuilder;
-import co.com.ceiba.estacionamiento.negocio.manager.TiqueteService;
 import co.com.ceiba.estacionamiento.negocio.model.Tiquete;
+import co.com.ceiba.estacionamiento.negocio.service.TiqueteService;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 import co.com.ceiba.estacionamiento.testdatabuilder.TiqueteTestDataBuilder;
 
