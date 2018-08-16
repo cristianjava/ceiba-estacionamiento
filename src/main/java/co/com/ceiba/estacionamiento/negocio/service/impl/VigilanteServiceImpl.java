@@ -11,11 +11,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.com.ceiba.estacionamiento.negocio.dao.TarifaDao;
 import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
+import co.com.ceiba.estacionamiento.negocio.repository.TarifaRepository;
 import co.com.ceiba.estacionamiento.negocio.service.TiqueteService;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.service.VigilanteService;
@@ -31,7 +31,7 @@ public class VigilanteServiceImpl implements VigilanteService {
 	VehiculoService vehiculoService;
 	
 	@Autowired
-	TarifaDao tarifaDao;
+	TarifaRepository tarifaRepository;
 	
 	@Autowired
 	TiqueteService tiqueteService;
@@ -119,7 +119,7 @@ public class VigilanteServiceImpl implements VigilanteService {
 	private void calcularValor(VehiculoEntity vehiculoEntity, TiqueteEntity tiqueteEntity) {
 
 		// Se consultan las tarifas
-		List<TarifaEntity> listaTarifas = tarifaDao.findAll();
+		List<TarifaEntity> listaTarifas = tarifaRepository.findAll();
 		
 		// dependiendo del tipo vehiculo se calcula el total a pagar con las tarifas
 		if (vehiculoEntity.getTipoVehiculo().getId() == Constantes.TV_CARRO) {

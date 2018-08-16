@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.com.ceiba.estacionamiento.negocio.dao.VehiculoDao;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
+import co.com.ceiba.estacionamiento.negocio.repository.VehiculoRepository;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 
@@ -16,7 +16,7 @@ import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 public class VehiculoServiceImpl implements VehiculoService {
 
 	@Autowired
-	private VehiculoDao vehiculoDAO;
+	private VehiculoRepository vehiculoRepository;
 
 	/*
 	 * (non-Javadoc)
@@ -31,7 +31,7 @@ public class VehiculoServiceImpl implements VehiculoService {
 		}
 		// Se valida que si la placa comienza por A y es diferente de Domingo o Lunes tira la excepcion
 		
-		vehiculoDAO.save(vehiculo);
+		vehiculoRepository.save(vehiculo);
 	}
 
 	/*
@@ -44,7 +44,7 @@ public class VehiculoServiceImpl implements VehiculoService {
 		if (vehiculoParqueado == null) {
 			throw new EstacionamientoException(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO);
 		}
-		vehiculoDAO.delete(vehiculoEntity);
+		vehiculoRepository.delete(vehiculoEntity);
 	}
 
 	/*
@@ -54,7 +54,7 @@ public class VehiculoServiceImpl implements VehiculoService {
 	@Override
 	public VehiculoEntity findByPlaca(String placa) {
 		VehiculoEntity vehiculoEntity = null;
-		vehiculoEntity = vehiculoDAO.findVehiculoByPlaca(placa);
+		vehiculoEntity = vehiculoRepository.findVehiculoByPlaca(placa);
 		return vehiculoEntity;
 	}
 
@@ -64,12 +64,12 @@ public class VehiculoServiceImpl implements VehiculoService {
 	 */
 	@Override
 	public int findVehiculosParqueadosTipo(int tipoVehiculo) {
-		return vehiculoDAO.findVehiculosParqueadosTipo(tipoVehiculo);
+		return vehiculoRepository.findVehiculosParqueadosTipo(tipoVehiculo);
 	}
 
 	@Override
 	public List<VehiculoEntity> findAll() {
-		return vehiculoDAO.findAll();
+		return vehiculoRepository.findAll();
 	}
 
 }

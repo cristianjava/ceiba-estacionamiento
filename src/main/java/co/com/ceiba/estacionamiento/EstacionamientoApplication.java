@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages ={"co.com.ceiba.estacionamiento.negocio.model","co.com.ceiba.estacionamiento.negocio.dao","co.com.ceiba.estacionamiento"})
+@ComponentScan(basePackages ={"co.com.ceiba.estacionamiento.negocio.model","co.com.ceiba.estacionamiento.negocio.repository","co.com.ceiba.estacionamiento"})
 @EntityScan("co.com.ceiba.estacionamiento.negocio.entity")
 public class EstacionamientoApplication {
 
