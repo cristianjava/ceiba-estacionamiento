@@ -20,10 +20,9 @@ import co.com.ceiba.estacionamiento.EstacionamientoApplication;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
-import co.com.ceiba.estacionamiento.negocio.manager.TiqueteManager;
-import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
-import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
-import co.com.ceiba.estacionamiento.negocio.manager.impl.VigilanteManagerImpl;
+import co.com.ceiba.estacionamiento.negocio.manager.VehiculoService;
+import co.com.ceiba.estacionamiento.negocio.manager.VigilanteService;
+import co.com.ceiba.estacionamiento.negocio.manager.impl.VigilanteServiceImpl;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
@@ -35,7 +34,7 @@ import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 @DataJpaTest
 public class VigilanteTest {
 
-	private static final Logger LOGGER = Logger.getLogger(VigilanteManagerImpl.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(VigilanteServiceImpl.class.getName());
 	
 	// datos de prueba para una moto
 	private static final DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
@@ -70,14 +69,11 @@ public class VigilanteTest {
 	private static final String FECHA_SALIDA_TEST_CUATRO = "10:14:00 08/08/2018";
 	
 	@Autowired
-	VigilanteManager vigilanteManager;
+	VigilanteService vigilanteService;
 	
 	@Autowired
-	VehiculoManager vehiculoManager;
+	VehiculoService vehiculoService;
 
-	@Autowired
-	TiqueteManager tiqueteManager;
-	
 	@Test
 	public void parquearVehiculoCarro() {
 		
@@ -86,10 +82,10 @@ public class VigilanteTest {
 		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
 		
 		// act
-		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
+		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
 		
 		// assert
-		Assert.assertNotNull(vehiculoManager.findByPlaca(vehiculoCarro.getPlaca()));
+		Assert.assertNotNull(vehiculoService.findByPlaca(vehiculoCarro.getPlaca()));
 	}
 
 	@Test
@@ -103,10 +99,10 @@ public class VigilanteTest {
 		Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 		
 		// act
-		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 
 		// assert
-		Assert.assertNotNull(vehiculoManager.findByPlaca(vehiculoMoto.getPlaca()));
+		Assert.assertNotNull(vehiculoService.findByPlaca(vehiculoMoto.getPlaca()));
 	}
 
 	@Test
@@ -121,7 +117,7 @@ public class VigilanteTest {
 		Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 		try {
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 		} catch (EstacionamientoException e) {
 			mensajeError = e.getMessage();
 		}
@@ -138,9 +134,9 @@ public class VigilanteTest {
 		Vehiculo vehiculo = vehiculoTestDataBuilder.build();
 		
 		// act
-		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
+		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
 		try {
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
 			fail();
 		} catch (EstacionamientoException e) {
 			mensajeError = e.getMessage();
@@ -161,9 +157,9 @@ public class VigilanteTest {
 		Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 		
 		// act
-		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 		try {
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			fail();
 		} catch (EstacionamientoException e) {
 			mensajeError = e.getMessage();
@@ -183,7 +179,7 @@ public class VigilanteTest {
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(placa).conCilindraje(CILINDRAJE).
 					conTipoVehiculo(TIPO_VEHICULO);
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			consecutivoPlacaMoto++;
 		}
 		VehiculoTestDataBuilder vehiculoTestDataBuilderIngreso = new VehiculoTestDataBuilder().conCilindraje(CILINDRAJE).
@@ -191,7 +187,7 @@ public class VigilanteTest {
 		Vehiculo vehiculoMotoIngreso = vehiculoTestDataBuilderIngreso.build();
 		try {
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMotoIngreso));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMotoIngreso));
 		} catch (EstacionamientoException e) {
 			mensajeError = e.getMessage();
 		}
@@ -209,14 +205,14 @@ public class VigilanteTest {
 			String placa = LETRAS_PLACA_CARRO + String.valueOf(consecutivoPlaca);
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(placa);
 			Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
 			consecutivoPlaca++;
 		}
 		VehiculoTestDataBuilder vehiculoTestDataBuilderIngreso = new VehiculoTestDataBuilder();
 		Vehiculo vehiculoCarroIngreso = vehiculoTestDataBuilderIngreso.build();
 		try {
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarroIngreso));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarroIngreso));
 		} catch (EstacionamientoException e) {
 			mensajeError = e.getMessage();
 		}
@@ -233,15 +229,15 @@ public class VigilanteTest {
 			Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
 			
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_CARRO_TEST);
 			vehiculoCarro.setFechaSalida(fechaFinal);
-			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoCarro));
+			TiqueteEntity tiqueteEntity = vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoCarro));
 			
 			// assert
-			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+			Assert.assertNull(vehiculoService.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -259,15 +255,15 @@ public class VigilanteTest {
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 			
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_MOTO_TEST);
 			vehiculoMoto.setFechaSalida(fechaFinal);
-			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			TiqueteEntity tiqueteEntity = vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			// assert
-			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+			Assert.assertNull(vehiculoService.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -285,15 +281,15 @@ public class VigilanteTest {
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 			
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_DOS);
 			vehiculoMoto.setFechaSalida(fechaFinal);
-			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			TiqueteEntity tiqueteEntity = vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			// assert
-			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+			Assert.assertNull(vehiculoService.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -311,15 +307,15 @@ public class VigilanteTest {
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 			
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_TRES);
 			vehiculoMoto.setFechaSalida(fechaFinal);
-			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			TiqueteEntity tiqueteEntity = vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			// assert
-			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+			Assert.assertNull(vehiculoService.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -337,15 +333,15 @@ public class VigilanteTest {
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 			
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_CUATRO);
 			vehiculoMoto.setFechaSalida(fechaFinal);
-			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			TiqueteEntity tiqueteEntity = vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			// assert
-			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+			Assert.assertNull(vehiculoService.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -363,15 +359,15 @@ public class VigilanteTest {
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 			
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_TRES);
 			vehiculoMoto.setFechaSalida(fechaFinal);
-			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			TiqueteEntity tiqueteEntity = vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			// assert
-			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+			Assert.assertNull(vehiculoService.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}
@@ -389,15 +385,15 @@ public class VigilanteTest {
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
 			
 			// act
-			vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 			Date fechaFinal = dateFormat.parse(FECHA_SALIDA_TEST_CUATRO);
 			vehiculoMoto.setFechaSalida(fechaFinal);
-			TiqueteEntity tiqueteEntity = vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
+			TiqueteEntity tiqueteEntity = vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculoMoto));
 			
 			// assert
-			Assert.assertNull(vehiculoManager.findByPlaca(tiqueteEntity.getPlaca()));
+			Assert.assertNull(vehiculoService.findByPlaca(tiqueteEntity.getPlaca()));
 		} catch (ParseException e) {
 			LOGGER.info(e.getMessage());
 		}

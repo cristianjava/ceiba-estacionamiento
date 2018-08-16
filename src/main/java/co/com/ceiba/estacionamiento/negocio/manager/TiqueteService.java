@@ -2,7 +2,7 @@ package co.com.ceiba.estacionamiento.negocio.manager;
 
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 
-public interface TiqueteManager {
+public interface TiqueteService {
 
 	/**
 	 * Metodo para guardar en TIQUETE PARQUEO

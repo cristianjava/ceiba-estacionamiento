@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.TiqueteBuilder;
-import co.com.ceiba.estacionamiento.negocio.manager.TiqueteManager;
+import co.com.ceiba.estacionamiento.negocio.manager.TiqueteService;
 import co.com.ceiba.estacionamiento.negocio.model.Tiquete;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 import co.com.ceiba.estacionamiento.testdatabuilder.TiqueteTestDataBuilder;
@@ -27,7 +27,7 @@ import co.com.ceiba.estacionamiento.testdatabuilder.TiqueteTestDataBuilder;
 public class TiqueteTest {
 
 	@Autowired
-	TiqueteManager tiqueteManager;
+	TiqueteService tiqueteService;
 	
 	private static final DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 	private static final String PLACA = "CVA531";
@@ -69,7 +69,7 @@ public class TiqueteTest {
 		Tiquete tiquete = tiqueteTestDataBuilder.build();
 
 		// act
-		tiqueteManager.guardar(TiqueteBuilder.convertirAEntity(tiquete));
+		tiqueteService.guardar(TiqueteBuilder.convertirAEntity(tiquete));
 		
 		// assert
 		Assert.assertNotNull(tiquete);

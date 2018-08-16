@@ -9,32 +9,32 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import co.com.ceiba.estacionamiento.negocio.dao.TarifaDao;
 import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
-import co.com.ceiba.estacionamiento.negocio.manager.TiqueteManager;
-import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
-import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
+import co.com.ceiba.estacionamiento.negocio.manager.TiqueteService;
+import co.com.ceiba.estacionamiento.negocio.manager.VehiculoService;
+import co.com.ceiba.estacionamiento.negocio.manager.VigilanteService;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 import co.com.ceiba.estacionamiento.negocio.validate.Validate;
 import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateParqueoDisponible;
 import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateRestriccionPlaca;
 
-@Repository
-public class VigilanteManagerImpl implements VigilanteManager {
+@Service
+public class VigilanteServiceImpl implements VigilanteService {
 
 	@Autowired
-	VehiculoManager vehiculoManager;
+	VehiculoService vehiculoService;
 	
 	@Autowired
 	TarifaDao tarifaDao;
 	
 	@Autowired
-	TiqueteManager tiqueteManager;
+	TiqueteService tiqueteService;
 	
 	/*
 	 * (non-Javadoc)
@@ -45,7 +45,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		List<Validate> validaciones = new ArrayList<>();
 		
 		// se valida que el parqueadero no tenga los 20 carros y 10 motos
-		validaciones.add(new ValidateParqueoDisponible(vehiculoManager));
+		validaciones.add(new ValidateParqueoDisponible(vehiculoService));
 		
 		// se valida que si la placa empieza por A y es Domingo o Lunes permite el parqueo
 		validaciones.add(new ValidateRestriccionPlaca());
@@ -56,7 +56,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		}
 		
 		// Guardamos en VEHICULO PARQUEADO
-		vehiculoManager.guardar(vehiculoEntity);
+		vehiculoService.guardar(vehiculoEntity);
 		
 	}
 
@@ -69,7 +69,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		// Se elimina de VEHICULO PARQUEADO y se ingresa en TIQUETE PAGO
 		TiqueteEntity tiqueteEntity = null;
 		// Se busca el vehiculo parqueado y se calcula el tiempo en dias y horas
-		VehiculoEntity vehiculoParqueado = vehiculoManager.findByPlaca(vehiculoEntity.getPlaca());
+		VehiculoEntity vehiculoParqueado = vehiculoService.findByPlaca(vehiculoEntity.getPlaca());
 		if (vehiculoParqueado == null) {
 			throw new EstacionamientoException(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO);
 		}
@@ -106,7 +106,7 @@ public class VigilanteManagerImpl implements VigilanteManager {
 		tiqueteEntity.setHorasParqueo(Integer.parseInt(horasParqueadas.toString()));
 		this.calcularValor(vehiculoParqueado,tiqueteEntity);
 		// Borramos VEHICULO_PARQUEADO
-		vehiculoManager.eliminar(vehiculoParqueado);
+		vehiculoService.eliminar(vehiculoParqueado);
 		return tiqueteEntity;
 	}
 

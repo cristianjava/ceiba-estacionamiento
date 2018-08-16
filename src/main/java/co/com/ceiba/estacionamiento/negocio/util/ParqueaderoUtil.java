@@ -5,11 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import co.com.ceiba.estacionamiento.negocio.manager.impl.VigilanteManagerImpl;
+import co.com.ceiba.estacionamiento.negocio.manager.impl.VigilanteServiceImpl;
 
 public final class ParqueaderoUtil {
 
-	private static final Logger LOGGER = Logger.getLogger(VigilanteManagerImpl.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(VigilanteServiceImpl.class.getName());
 	
 	private ParqueaderoUtil(){
 		

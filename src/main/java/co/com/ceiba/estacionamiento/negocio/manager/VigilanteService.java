@@ -3,7 +3,7 @@ package co.com.ceiba.estacionamiento.negocio.manager;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 
-public interface VigilanteManager {
+public interface VigilanteService {
 
 	/**
 	 * Metodo para ingresar un vehiculo en la tabla VEHICULO PARQUEADO y TIQUETE PAGO

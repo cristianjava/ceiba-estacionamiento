@@ -4,7 +4,7 @@ import java.util.List;
 
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 
-public interface VehiculoManager {
+public interface VehiculoService {
 
 	/**
 	 * Metodo para guardar en la tabla VEHICULO PARQUEADO

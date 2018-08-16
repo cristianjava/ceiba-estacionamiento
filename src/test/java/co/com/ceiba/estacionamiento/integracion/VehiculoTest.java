@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
 import co.com.ceiba.estacionamiento.api.VehiculoRest;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
-import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
+import co.com.ceiba.estacionamiento.negocio.manager.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
@@ -28,7 +28,7 @@ public class VehiculoTest {
 	private static final String FECHA_SALIDA_TEST_DOS = "10:30:00 08/08/2018";
 	
 	@Autowired
-	VehiculoManager vehiculoManager;
+	VehiculoService vehiculoService;
 
 	@Autowired
 	VehiculoRest vehiculoRest;
@@ -77,7 +77,7 @@ public class VehiculoTest {
 		vehiculoRest.salidaParqueadero(vehiculoCarro);
 		
 		// assert
-		Assert.assertNull(vehiculoManager.findByPlaca(vehiculoCarro.getPlaca()));
+		Assert.assertNull(vehiculoService.findByPlaca(vehiculoCarro.getPlaca()));
 	}
 
 	@Test
@@ -93,6 +93,6 @@ public class VehiculoTest {
 		vehiculoRest.salidaParqueadero(vehiculoCarro);
 		
 		// assert
-		Assert.assertNull(vehiculoManager.findByPlaca(vehiculoCarro.getPlaca()));
+		Assert.assertNull(vehiculoService.findByPlaca(vehiculoCarro.getPlaca()));
 	}
 }

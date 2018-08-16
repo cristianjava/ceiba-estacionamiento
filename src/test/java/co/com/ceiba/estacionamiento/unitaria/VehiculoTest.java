@@ -19,7 +19,7 @@ import co.com.ceiba.estacionamiento.EstacionamientoApplication;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
-import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
+import co.com.ceiba.estacionamiento.negocio.manager.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
@@ -32,7 +32,7 @@ import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 public class VehiculoTest {
 
 	@Autowired
-	VehiculoManager vehiculoManager;
+	VehiculoService vehiculoService;
 	
 	private static final DateFormat hourdateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 	private static final String PLACA = "CVA531";
@@ -71,7 +71,7 @@ public class VehiculoTest {
 		Vehiculo vehiculo = vehiculoTestDataBuilder.build();
 		
 		// act
-		VehiculoEntity vehiculoEntity = vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		VehiculoEntity vehiculoEntity = vehiculoService.findByPlaca(vehiculo.getPlaca());
 		
 		// assert
 		assertNull(vehiculoEntity);
@@ -86,7 +86,7 @@ public class VehiculoTest {
 		
 		try {
 			// act
-			vehiculoManager.eliminar(VehiculoBuilder.convertirAEntity(vehiculo));
+			vehiculoService.eliminar(VehiculoBuilder.convertirAEntity(vehiculo));
 		} catch (EstacionamientoException e) {
 			// assert
 			Assert.assertEquals(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO, e.getMessage());

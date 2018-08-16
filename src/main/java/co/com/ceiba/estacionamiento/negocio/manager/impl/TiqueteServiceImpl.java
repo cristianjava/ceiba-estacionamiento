@@ -1,14 +1,14 @@
 package co.com.ceiba.estacionamiento.negocio.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import co.com.ceiba.estacionamiento.negocio.dao.TiqueteDao;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
-import co.com.ceiba.estacionamiento.negocio.manager.TiqueteManager;
+import co.com.ceiba.estacionamiento.negocio.manager.TiqueteService;
 
-@Repository
-public class TiqueteManagerImpl implements TiqueteManager {
+@Service
+public class TiqueteServiceImpl implements TiqueteService {
 
 	@Autowired
 	TiqueteDao tiqueteDao;

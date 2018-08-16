@@ -14,8 +14,8 @@ import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
-import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
-import co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager;
+import co.com.ceiba.estacionamiento.negocio.manager.VehiculoService;
+import co.com.ceiba.estacionamiento.negocio.manager.VigilanteService;
 import co.com.ceiba.estacionamiento.negocio.model.ResponseService;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
@@ -26,10 +26,10 @@ import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 public class VehiculoRest {
 
 	@Autowired
-	VehiculoManager vehiculoManager;
+	VehiculoService vehiculoService;
 	
 	@Autowired
-	VigilanteManager vigilanteManager;
+	VigilanteService vigilanteService;
 	
 	/**
 	 * Servicio para consultar todos los vehiculos parqueados
@@ -39,7 +39,7 @@ public class VehiculoRest {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping("/buscarVehiculos")
 	public List<VehiculoEntity> buscarVehiculos() {
-		return vehiculoManager.findAll();
+		return vehiculoService.findAll();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class VehiculoRest {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/buscarVehiculoPlaca")
 	public VehiculoEntity buscarVehiculoPlaca(@RequestBody Vehiculo vehiculo) {
-		VehiculoEntity vehiculoEntity = vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		VehiculoEntity vehiculoEntity = vehiculoService.findByPlaca(vehiculo.getPlaca());
 		if (vehiculoEntity == null) {
 			throw new EstacionamientoException(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO);
 		}
@@ -67,13 +67,13 @@ public class VehiculoRest {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/registrarParqueo")
     public ResponseService registrarParqueo(@RequestBody Vehiculo vehiculo) {
-		VehiculoEntity vehiculoEntity = vehiculoManager.findByPlaca(vehiculo.getPlaca());
+		VehiculoEntity vehiculoEntity = vehiculoService.findByPlaca(vehiculo.getPlaca());
 		if (vehiculoEntity != null) {
 			throw new EstacionamientoException(Constantes.EL_VEHICULO_ESTA_PARQUEADO);
 		}
 		vehiculo.setFechaIngreso(vehiculo.getFechaIngreso() == null ? new Date() : vehiculo.getFechaIngreso());
 		ResponseService responseService = new ResponseService();
-		vigilanteManager.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
+		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
 		responseService.setCodigo(Constantes.HTTP_CODIGO_EXITO);
 		responseService.setMensaje(Constantes.HTTP_MENSAJE_EXITO);
 		responseService.setDescripcion(Constantes.HTTP_DESCRIPCION_EXITO);
@@ -91,7 +91,7 @@ public class VehiculoRest {
     public TiqueteEntity salidaParqueadero(@RequestBody Vehiculo vehiculo) {
 		vehiculo.setFechaSalida(vehiculo.getFechaSalida() == null ? new Date() : vehiculo.getFechaSalida());
 		vehiculo.setTipoVehiculo(new TipoVehiculo());
-		return vigilanteManager.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculo));
+		return vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculo));
     }
 
 }

@@ -3,12 +3,14 @@ package co.com.ceiba.estacionamiento.negocio.manager.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.com.ceiba.estacionamiento.negocio.dao.TarifaDao;
 import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
-import co.com.ceiba.estacionamiento.negocio.manager.TarifaManager;
+import co.com.ceiba.estacionamiento.negocio.manager.TarifaService;
 
-public class TarifaManagerImpl implements TarifaManager{
+@Service
+public class TarifaServiceImpl implements TarifaService{
 
 	@Autowired
 	TarifaDao tarifaDao;
