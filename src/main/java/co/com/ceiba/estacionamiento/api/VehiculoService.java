@@ -1,4 +1,4 @@
-package co.com.ceiba.estacionamiento.services;
+package co.com.ceiba.estacionamiento.api;
 
 import java.util.Date;
 import java.util.List;

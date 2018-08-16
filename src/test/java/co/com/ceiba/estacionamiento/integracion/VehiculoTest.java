@@ -11,11 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
+import co.com.ceiba.estacionamiento.api.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.manager.VehiculoManager;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
-import co.com.ceiba.estacionamiento.services.VehiculoService;
 import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 
 @RunWith(SpringRunner.class)
