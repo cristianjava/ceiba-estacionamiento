@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import co.com.ceiba.estacionamiento.negocio.manager.impl.VigilanteServiceImpl;
+import co.com.ceiba.estacionamiento.negocio.service.impl.VigilanteServiceImpl;
 
 public final class ParqueaderoUtil {
 

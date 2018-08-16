@@ -1,4 +1,4 @@
-package co.com.ceiba.estacionamiento.negocio.manager.impl;
+package co.com.ceiba.estacionamiento.negocio.service.impl;
 
 import java.sql.Timestamp;
 import java.time.Duration;

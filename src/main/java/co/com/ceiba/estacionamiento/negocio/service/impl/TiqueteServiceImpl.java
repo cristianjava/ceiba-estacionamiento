@@ -1,4 +1,4 @@
-package co.com.ceiba.estacionamiento.negocio.manager.impl;
+package co.com.ceiba.estacionamiento.negocio.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
