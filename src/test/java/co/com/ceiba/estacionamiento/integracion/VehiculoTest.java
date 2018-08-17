@@ -13,8 +13,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
 import co.com.ceiba.estacionamiento.api.VigilanteRest;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
+import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
+import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 import co.com.ceiba.estacionamiento.negocio.util.ParqueaderoUtil;
 import co.com.ceiba.estacionamiento.testdatabuilder.VehiculoTestDataBuilder;
 
@@ -50,7 +52,7 @@ public class VehiculoTest {
 	}
 
 	@Test
-	public void serviceParqueoBuscaPlaca() {
+	public void serviceParqueoBuscaPlacaExistente() {
 
 		// arrange
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
@@ -63,6 +65,22 @@ public class VehiculoTest {
 		
 		// assert
 		Assert.assertNotNull(vehiculoEntity);
+	}
+
+	@Test
+	public void restParqueoBuscaPlacaInexistente() {
+
+		// arrange
+		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
+		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
+		
+		try {
+			// act
+			vehiculoRest.buscarVehiculoPlaca(vehiculoCarro);
+		} catch (EstacionamientoException e) {
+			// assert
+			Assert.assertEquals(Constantes.EL_VEHICULO_NO_ESTA_PARQUEADO, e.getMessage());
+		}
 	}
 
 	@Test
