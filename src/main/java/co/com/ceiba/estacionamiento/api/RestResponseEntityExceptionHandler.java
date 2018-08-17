@@ -16,17 +16,17 @@ import co.com.ceiba.estacionamiento.negocio.service.impl.VigilanteServiceImpl;
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-	private static final Logger LOGGERCONSOLE = Logger.getLogger(VigilanteServiceImpl.class.getName());
+	private static final Logger LOGGER  = Logger.getLogger(VigilanteServiceImpl.class.getName());
 	
 	@ExceptionHandler({ EstacionamientoException.class })
 	public ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
-		return new ResponseEntity<Object>(ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler({ Throwable.class })
 	public ResponseEntity<Object> handleAccesTecnicalExceptioon(Exception ex, WebRequest request) {
-		LOGGERCONSOLE.info(ex.toString());
-		return new ResponseEntity<Object>("Se presentó un error comuniquese con el administrador del sistema", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+		LOGGER .info(ex.toString());
+		return new ResponseEntity<>("Se presentó un error comuniquese con el administrador del sistema", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
