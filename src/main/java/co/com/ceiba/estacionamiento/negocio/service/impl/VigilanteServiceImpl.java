@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
+import co.com.ceiba.estacionamiento.negocio.entity.TipoVehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
@@ -42,6 +43,12 @@ public class VigilanteServiceImpl implements VigilanteService {
 	 */
 	@Override
 	public void ingresarVehiculoParqueadero(VehiculoEntity vehiculoEntity) {
+		VehiculoEntity vehiculoParqueado = vehiculoService.findByPlaca(vehiculoEntity.getPlaca());
+		if (vehiculoParqueado != null) {
+			throw new EstacionamientoException(Constantes.EL_VEHICULO_ESTA_PARQUEADO);
+		}
+		vehiculoEntity.setFechaIngreso(vehiculoEntity.getFechaIngreso() == null ? new Date() : vehiculoEntity.getFechaIngreso());
+		
 		List<Validate> validaciones = new ArrayList<>();
 		
 		// se valida que el parqueadero no tenga los 20 carros y 10 motos
@@ -66,6 +73,8 @@ public class VigilanteServiceImpl implements VigilanteService {
 	 */
 	@Override
 	public TiqueteEntity salidaVehiculoParqueado(VehiculoEntity vehiculoEntity) {
+		vehiculoEntity.setFechaSalida(vehiculoEntity.getFechaSalida() == null ? new Date() : vehiculoEntity.getFechaSalida());
+		vehiculoEntity.setTipoVehiculo(new TipoVehiculoEntity());
 		// Se elimina de VEHICULO PARQUEADO y se ingresa en TIQUETE PAGO
 		TiqueteEntity tiqueteEntity = null;
 		// Se busca el vehiculo parqueado y se calcula el tiempo en dias y horas

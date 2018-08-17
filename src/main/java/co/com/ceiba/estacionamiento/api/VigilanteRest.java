@@ -1,6 +1,5 @@
 package co.com.ceiba.estacionamiento.api;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
-import co.com.ceiba.estacionamiento.negocio.model.ResponseService;
-import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.service.VigilanteService;
@@ -66,18 +63,8 @@ public class VigilanteRest {
 	 */
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/registrarParqueo")
-    public ResponseService registrarParqueo(@RequestBody Vehiculo vehiculo) {
-		VehiculoEntity vehiculoEntity = vehiculoService.findByPlaca(vehiculo.getPlaca());
-		if (vehiculoEntity != null) {
-			throw new EstacionamientoException(Constantes.EL_VEHICULO_ESTA_PARQUEADO);
-		}
-		vehiculo.setFechaIngreso(vehiculo.getFechaIngreso() == null ? new Date() : vehiculo.getFechaIngreso());
-		ResponseService responseService = new ResponseService();
+    public void registrarParqueo(@RequestBody Vehiculo vehiculo) {
 		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
-		responseService.setCodigo(Constantes.HTTP_CODIGO_EXITO);
-		responseService.setMensaje(Constantes.HTTP_MENSAJE_EXITO);
-		responseService.setDescripcion(Constantes.HTTP_DESCRIPCION_EXITO);
-		return responseService;
     }
 
 	/**
@@ -89,8 +76,6 @@ public class VigilanteRest {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/salidaParqueadero")
     public TiqueteEntity salidaParqueadero(@RequestBody Vehiculo vehiculo) {
-		vehiculo.setFechaSalida(vehiculo.getFechaSalida() == null ? new Date() : vehiculo.getFechaSalida());
-		vehiculo.setTipoVehiculo(new TipoVehiculo());
 		return vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculo));
     }
 
