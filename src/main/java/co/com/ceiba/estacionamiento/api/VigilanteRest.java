@@ -23,7 +23,7 @@ import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 
 @RestController
 @RequestMapping("/vehiculo")
-public class VehiculoRest {
+public class VigilanteRest {
 
 	@Autowired
 	VehiculoService vehiculoService;

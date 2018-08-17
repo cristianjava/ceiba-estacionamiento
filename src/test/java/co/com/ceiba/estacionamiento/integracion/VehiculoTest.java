@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
-import co.com.ceiba.estacionamiento.api.VehiculoRest;
+import co.com.ceiba.estacionamiento.api.VigilanteRest;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
@@ -31,7 +31,7 @@ public class VehiculoTest {
 	VehiculoService vehiculoService;
 
 	@Autowired
-	VehiculoRest vehiculoRest;
+	VigilanteRest vehiculoRest;
 
 	@Test
 	public void serviceParqueoBusca() {
