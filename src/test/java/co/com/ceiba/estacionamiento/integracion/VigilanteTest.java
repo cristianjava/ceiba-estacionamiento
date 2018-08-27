@@ -14,14 +14,19 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import co.com.ceiba.estacionamiento.EstacionamientoApplication;
+import co.com.ceiba.estacionamiento.api.ParqueaderoConfiguration;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.model.TipoVehiculo;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
+import co.com.ceiba.estacionamiento.negocio.repository.TarifaRepository;
+import co.com.ceiba.estacionamiento.negocio.service.TiqueteService;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.service.VigilanteService;
 import co.com.ceiba.estacionamiento.negocio.service.impl.VigilanteServiceImpl;
@@ -68,11 +73,26 @@ public class VigilanteTest {
 	private static final String FECHA_INGRESO_TEST_CUATRO = "10:00:00 08/08/2018";
 	private static final String FECHA_SALIDA_TEST_CUATRO = "10:14:00 08/08/2018";
 	
-	@Autowired
 	VigilanteService vigilanteService;
+
+	@Autowired
+	TarifaRepository tarifaRepository;
 	
 	@Autowired
+	TiqueteService tiqueteService; 	
+
+	@Autowired
 	VehiculoService vehiculoService;
+
+	/**
+	 * Metodo para instanciar el servicio de vigilanteSerivice con el parqueaderConfiguration
+	 */
+	private void instanciaVigilanteservice() {
+		if (vigilanteService == null) {
+			ApplicationContext ctx = new AnnotationConfigApplicationContext(ParqueaderoConfiguration.class);
+			vigilanteService = ctx.getBean(VigilanteService.class, vehiculoService, tarifaRepository, tiqueteService);
+		}
+	}
 
 	@Test
 	public void parquearVehiculoCarro() {
@@ -80,6 +100,7 @@ public class VigilanteTest {
 		// arrange
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
 		Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
+		this.instanciaVigilanteservice();
 		
 		// act
 		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
@@ -95,8 +116,8 @@ public class VigilanteTest {
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
 				conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
 				conFechaSalida(FECHA_SALIDA != null ? ParqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).conTipoVehiculo(TIPO_VEHICULO);
-
 		Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+		this.instanciaVigilanteservice();
 		
 		// act
 		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -113,8 +134,9 @@ public class VigilanteTest {
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA_RESTRICCION).conCilindraje(CILINDRAJE).
 				conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_MARTES)).
 				conFechaSalida(FECHA_SALIDA != null ? ParqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).conTipoVehiculo(TIPO_VEHICULO);
-
 		Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+		this.instanciaVigilanteservice();
+		
 		try {
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -132,6 +154,7 @@ public class VigilanteTest {
 		String mensajeError = null;
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
 		Vehiculo vehiculo = vehiculoTestDataBuilder.build();
+		this.instanciaVigilanteservice();
 		
 		// act
 		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
@@ -153,8 +176,8 @@ public class VigilanteTest {
 		VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
 				conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
 				conFechaSalida(FECHA_SALIDA != null ? ParqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).conTipoVehiculo(TIPO_VEHICULO);
-
 		Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+		this.instanciaVigilanteservice();
 		
 		// act
 		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -174,6 +197,7 @@ public class VigilanteTest {
 		// arrange
 		String mensajeError = null;
 		int consecutivoPlacaMoto = NUMEROS_PLACA_MOTO;
+		this.instanciaVigilanteservice();
 		for (int i = 0; i < Constantes.CMV_CANTIDAD_MAXIMA_MOTOS; i++) {
 			String placa = LETRAS_PLACA_MOTO + String.valueOf(consecutivoPlacaMoto) + LETRAFIN_PLACA_MOTO;
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(placa).conCilindraje(CILINDRAJE).
@@ -185,6 +209,7 @@ public class VigilanteTest {
 		VehiculoTestDataBuilder vehiculoTestDataBuilderIngreso = new VehiculoTestDataBuilder().conCilindraje(CILINDRAJE).
 				conTipoVehiculo(TIPO_VEHICULO);
 		Vehiculo vehiculoMotoIngreso = vehiculoTestDataBuilderIngreso.build();
+		
 		try {
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMotoIngreso));
@@ -201,6 +226,7 @@ public class VigilanteTest {
 		// arrange
 		String mensajeError = null;
 		int consecutivoPlaca = NUMEROS_PLACA_CARRO;
+		this.instanciaVigilanteservice();
 		for (int i = 0; i < Constantes.CMV_CANTIDAD_MAXIMA_CARROS; i++) {
 			String placa = LETRAS_PLACA_CARRO + String.valueOf(consecutivoPlaca);
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(placa);
@@ -227,6 +253,7 @@ public class VigilanteTest {
 			// arrange
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder();
 			Vehiculo vehiculoCarro = vehiculoTestDataBuilder.build();
+			this.instanciaVigilanteservice();
 			
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoCarro));
@@ -251,8 +278,8 @@ public class VigilanteTest {
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
 					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO)).
 					conFechaSalida(FECHA_SALIDA != null ? ParqueaderoUtil.convertStringToDate(FECHA_SALIDA) : null).conTipoVehiculo(TIPO_VEHICULO);
-
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			this.instanciaVigilanteservice();
 			
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -277,8 +304,8 @@ public class VigilanteTest {
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
 					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_DOS)).
 					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_DOS)).conTipoVehiculo(TIPO_VEHICULO);
-
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			this.instanciaVigilanteservice();
 			
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -303,8 +330,8 @@ public class VigilanteTest {
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
 					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_TRES)).
 					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_TRES)).conTipoVehiculo(TIPO_VEHICULO);
-
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			this.instanciaVigilanteservice();
 			
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -329,8 +356,8 @@ public class VigilanteTest {
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE).
 					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_CUATRO)).
 					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_CUATRO)).conTipoVehiculo(TIPO_VEHICULO);
-
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			this.instanciaVigilanteservice();
 			
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -355,8 +382,8 @@ public class VigilanteTest {
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().
 					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_TRES)).
 					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_TRES)).conTipoVehiculo(TIPO_VEHICULO_CARRO);
-
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			this.instanciaVigilanteservice();
 			
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));
@@ -381,8 +408,8 @@ public class VigilanteTest {
 			VehiculoTestDataBuilder vehiculoTestDataBuilder = new VehiculoTestDataBuilder().conPlaca(PLACA).conCilindraje(CILINDRAJE_MENOR).
 					conFechaIngreso(ParqueaderoUtil.convertStringToDate(FECHA_INGRESO_TEST_CUATRO)).
 					conFechaSalida(ParqueaderoUtil.convertStringToDate(FECHA_SALIDA_TEST_CUATRO)).conTipoVehiculo(TIPO_VEHICULO);
-
 			Vehiculo vehiculoMoto = vehiculoTestDataBuilder.build();
+			this.instanciaVigilanteservice();
 			
 			// act
 			vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculoMoto));

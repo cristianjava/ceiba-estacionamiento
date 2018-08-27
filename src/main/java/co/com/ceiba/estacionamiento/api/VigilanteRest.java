@@ -3,6 +3,8 @@ package co.com.ceiba.estacionamiento.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,8 @@ import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.builder.VehiculoBuilder;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
 import co.com.ceiba.estacionamiento.negocio.model.Vehiculo;
+import co.com.ceiba.estacionamiento.negocio.repository.TarifaRepository;
+import co.com.ceiba.estacionamiento.negocio.service.TiqueteService;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.service.VigilanteService;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
@@ -22,12 +26,17 @@ import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 @RequestMapping("/vehiculo")
 public class VigilanteRest {
 
-	@Autowired
-	VehiculoService vehiculoService;
-	
-	@Autowired
 	VigilanteService vigilanteService;
 	
+	@Autowired
+	VehiculoService vehiculoService;
+
+	@Autowired
+	TarifaRepository tarifaRepository;
+	
+	@Autowired
+	TiqueteService tiqueteService; 	
+
 	/**
 	 * Servicio para consultar todos los vehiculos parqueados
 	 * 
@@ -64,6 +73,10 @@ public class VigilanteRest {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/registrarParqueo")
     public void registrarParqueo(@RequestBody Vehiculo vehiculo) {
+		if (vigilanteService == null) {
+			ApplicationContext ctx = new AnnotationConfigApplicationContext(ParqueaderoConfiguration.class);
+			vigilanteService = ctx.getBean(VigilanteService.class, vehiculoService, tarifaRepository, tiqueteService);
+		}
 		vigilanteService.ingresarVehiculoParqueadero(VehiculoBuilder.convertirAEntity(vehiculo));
     }
 
@@ -76,6 +89,10 @@ public class VigilanteRest {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(method = RequestMethod.POST ,value =  "/salidaParqueadero")
     public TiqueteEntity salidaParqueadero(@RequestBody Vehiculo vehiculo) {
+		if (vigilanteService == null) {
+			ApplicationContext ctx = new AnnotationConfigApplicationContext(ParqueaderoConfiguration.class);
+			vigilanteService = ctx.getBean(VigilanteService.class, vehiculoService, tarifaRepository, tiqueteService);
+		}
 		return vigilanteService.salidaVehiculoParqueado(VehiculoBuilder.convertirAEntity(vehiculo));
     }
 

@@ -4,67 +4,66 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.com.ceiba.estacionamiento.negocio.entity.TarifaEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.TipoVehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.TiqueteEntity;
 import co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity;
 import co.com.ceiba.estacionamiento.negocio.exception.EstacionamientoException;
+import co.com.ceiba.estacionamiento.negocio.model.Validaciones;
 import co.com.ceiba.estacionamiento.negocio.repository.TarifaRepository;
 import co.com.ceiba.estacionamiento.negocio.service.TiqueteService;
 import co.com.ceiba.estacionamiento.negocio.service.VehiculoService;
 import co.com.ceiba.estacionamiento.negocio.service.VigilanteService;
 import co.com.ceiba.estacionamiento.negocio.util.Constantes;
 import co.com.ceiba.estacionamiento.negocio.validate.Validate;
-import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateParqueoDisponible;
-import co.com.ceiba.estacionamiento.negocio.validate.impl.ValidateRestriccionPlaca;
 
 @Service
 public class VigilanteServiceImpl implements VigilanteService {
 
-	@Autowired
 	VehiculoService vehiculoService;
 	
-	@Autowired
 	TarifaRepository tarifaRepository;
 	
-	@Autowired
 	TiqueteService tiqueteService;
 	
+	Validaciones validaciones;
+
+	@Autowired
+	public VigilanteServiceImpl(VehiculoService vehiculoService, TarifaRepository tarifaRepositorio,
+			TiqueteService tiqueteService, Validaciones validaciones) {
+		super();
+		this.vehiculoService = vehiculoService;
+		this.tarifaRepository = tarifaRepositorio;
+		this.tiqueteService = tiqueteService;
+		this.validaciones = validaciones;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see co.com.ceiba.estacionamiento.negocio.manager.VigilanteManager#ingresarVehiculoParqueadero(co.com.ceiba.estacionamiento.negocio.entity.VehiculoEntity)
 	 */
+	@Transactional
 	@Override
 	public void ingresarVehiculoParqueadero(VehiculoEntity vehiculoEntity) {
+		// se valida que el vehiculo exista
 		VehiculoEntity vehiculoParqueado = vehiculoService.findByPlaca(vehiculoEntity.getPlaca());
 		if (vehiculoParqueado != null) {
 			throw new EstacionamientoException(Constantes.EL_VEHICULO_ESTA_PARQUEADO);
 		}
 		vehiculoEntity.setFechaIngreso(vehiculoEntity.getFechaIngreso() == null ? new Date() : vehiculoEntity.getFechaIngreso());
-		
-		List<Validate> validaciones = new ArrayList<>();
-		
-		// se valida que el parqueadero no tenga los 20 carros y 10 motos
-		validaciones.add(new ValidateParqueoDisponible(vehiculoService));
-		
-		// se valida que si la placa empieza por A y es Domingo o Lunes permite el parqueo
-		validaciones.add(new ValidateRestriccionPlaca());
-		
 		// Ejecutamos las validaciones
-		for (Validate validate : validaciones) {
+		for (Validate validate : validaciones.getValidaciones()) {
 			validate.validar(vehiculoEntity);
 		}
-		
 		// Guardamos en VEHICULO PARQUEADO
 		vehiculoService.guardar(vehiculoEntity);
-		
 	}
 
 	/*
