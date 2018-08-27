@@ -10,14 +10,14 @@ import co.com.ceiba.estacionamiento.negocio.validate.Validate;
 public class Validaciones {
 
 
-	List<Validate> validaciones;
+	List<Validate> validations;
 
 	public List<Validate> getValidaciones() {
-		return validaciones;
+		return validations;
 	}
 
-	public void setValidaciones(List<Validate> validaciones) {
-		this.validaciones = validaciones;
+	public void setValidaciones(List<Validate> validations) {
+		this.validations = validations;
 	}
 	
 }
